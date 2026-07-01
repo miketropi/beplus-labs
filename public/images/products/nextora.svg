@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <rect fill="url(#g1)" width="400" height="200" rx="8"/>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="400" y2="200">
+      <stop offset="0%" stop-color="#1E1E2E"/>
+      <stop offset="50%" stop-color="#2D2D44"/>
+      <stop offset="100%" stop-color="#1A1A2E"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="400" y2="200">
+      <stop offset="0%" stop-color="#CFFE25"/>
+      <stop offset="100%" stop-color="#A8D815"/>
+    </linearGradient>
+  </defs>
+  <!-- WP admin bar hint -->
+  <rect y="0" width="400" height="6" fill="url(#accent)" opacity="0.4"/>
+  <!-- Grid columns -->
+  <g opacity="0.15">
+    <rect x="20" y="40" width="110" height="130" rx="4" fill="white"/>
+    <rect x="138" y="40" width="110" height="130" rx="4" fill="white"/>
+    <rect x="256" y="40" width="110" height="70" rx="4" fill="white"/>
+    <rect x="256" y="118" width="110" height="52" rx="4" fill="white"/>
+  </g>
+  <!-- Highlighted card -->
+  <rect x="138" y="40" width="110" height="130" rx="4" fill="white" opacity="0.08" stroke="#CFFE25" stroke-width="1.5"/>
+  <!-- Card content -->
+  <rect x="148" y="55" width="90" height="8" rx="4" fill="white" opacity="0.25"/>
+  <rect x="148" y="70" width="60" height="6" rx="3" fill="white" opacity="0.15"/>
+  <rect x="148" y="85" width="90" height="40" rx="3" fill="#CFFE25" opacity="0.12"/>
+  <circle cx="193" cy="105" r="10" fill="#CFFE25" opacity="0.3"/>
+</svg>

@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "nextora",
+    "name": "Nextora",
+    "tagline": "WordPress block theme — modern FSE with Tailwind CSS v4",
+    "description": "A production-ready WordPress block theme built for full-site editing. Ships with 12 custom Gutenberg blocks (hero, post grid, image gallery, testimonial carousel, scrolling promotion, spotlight search, and more), Tailwind CSS v4 design tokens, TypeScript, PHPStan, and PHPUnit. Includes WooCommerce integration, Elementor support, and a comprehensive quality pipeline.",
+    "features": [
+      "12 custom Gutenberg blocks",
+      "Tailwind CSS v4 design system",
+      "WooCommerce + Elementor support",
+      "PHPStan, PHPUnit, TypeScript quality gates",
+      "Full-site editing with theme.json v3"
+    ],
+    "status": "launched",
+    "icon": "paintbrush",
+    "coverImage": "https://i.pinimg.com/1200x/f3/62/b6/f362b6bc0fcede73bd91d4179536c936.jpg",
+    "category": "WordPress Themes",
+    "github": "miketropi/nextora"
+  },
+  {
+    "slug": "beplus-visual-mega-nav",
+    "name": "BePlus Visual Mega Nav",
+    "tagline": "Gutenberg-powered mega menu builder for WordPress",
+    "description": "Build rich mega menus visually using the WordPress block editor. Features per-item settings (width, background, animation), import/export template store, ARIA-accessible keyboard navigation, and CSS custom properties for easy theme integration. Works natively with Appearance → Menus.",
+    "features": [
+      "Visual block-editor mega menu builder",
+      "Import/export template store",
+      "ARIA-accessible keyboard navigation",
+      "Per-item width, color & animation controls",
+      "CSS custom properties for theme overrides"
+    ],
+    "status": "beta",
+    "icon": "menu",
+    "coverImage": "https://i.pinimg.com/1200x/ed/d4/e8/edd4e83fcca6474088e1f236602480a6.jpg",
+    "category": "WordPress Plugins",
+    "github": "miketropi/beplus-visual-mega-nav"
+  },
+  {
+    "slug": "prompt-to-pattern",
+    "name": "Prompt to Pattern",
+    "tagline": "AI-powered block pattern composition for WordPress",
+    "description": "Describe a page layout in natural language and let AI compose it from existing block patterns. Supports multiple AI providers (OpenAI, Anthropic, Google, DeepSeek), guaranteed-valid markup in Pattern mode, and creative generation in V2 mode. Works inside the block editor with a simple sidebar panel.",
+    "features": [
+      "Natural-language prompt to block patterns",
+      "Multi-provider AI (OpenAI, Anthropic, Google, DeepSeek)",
+      "Pattern mode — guaranteed valid markup",
+      "Generation mode (V2) — creative synthesis",
+      "REST API for pattern discovery"
+    ],
+    "status": "dev",
+    "icon": "sparkles",
+    "coverImage": "",
+    "category": "WordPress Plugins",
+    "github": "miketropi/prompt-to-pattern"
+  },
+  {
+    "slug": "beplus-fast-product-filter",
+    "name": "BePlus Fast Product Filter",
+    "tagline": "Live product filtering & search for WooCommerce",
+    "description": "A Gutenberg-native WooCommerce plugin that adds instant product filtering and live search without page reloads. Built with TypeScript, esbuild, and PHP 8.0+. Features advanced filtering blocks, real-time results, and a mobile-optimized search UX.",
+    "features": [
+      "Live product filtering without page reload",
+      "Gutenberg-native filter blocks",
+      "Real-time search with instant results",
+      "Mobile-optimized UX patterns",
+      "TypeScript + esbuild build pipeline"
+    ],
+    "status": "beta",
+    "icon": "search",
+    "coverImage": "",
+    "category": "WooCommerce",
+    "github": "ducdung196qtr/beplus-fast-product-filter-live-search-for-woocommerce"
+  }
+]

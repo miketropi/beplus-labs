@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductStatus {
+  dev
+  beta
+  launched
+}
+
+enum ChangelogType {
+  feature
+  fix
+  improvement
+}
+
+model Product {
+  id         Int              @id @default(autoincrement())
+  slug       String           @unique
+  name       String
+  tagline    String
+  description String
+  features   Json
+  status     ProductStatus
+  icon       String
+  coverImage String           @default("")
+  category   String
+  github     String?
+
+  changelogEntries ChangelogEntry[]
+
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+model ChangelogEntry {
+  id         Int            @id @default(autoincrement())
+  date       DateTime
+  title      String
+  content    String         @default("")
+  version    String
+  type       ChangelogType
+
+  product    Product        @relation(fields: [productSlug], references: [slug])
+  productSlug String
+
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([productSlug])
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <rect fill="url(#g4)" width="400" height="200" rx="8"/>
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="400" y2="200">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#2a1a3e"/>
+    </linearGradient>
+  </defs>
+  <!-- Search bar -->
+  <rect x="100" y="20" width="200" height="28" rx="6" fill="white" opacity="0.06" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="120" cy="34" r="6" fill="none" stroke="white" stroke-width="1.5" opacity="0.2"/>
+  <line x1="124" y1="38" x2="128" y2="42" stroke="white" stroke-width="1.5" opacity="0.15"/>
+  <!-- Filter chips -->
+  <rect x="30" y="70" width="60" height="22" rx="11" fill="white" opacity="0.06"/>
+  <rect x="38" y="78" width="44" height="6" rx="3" fill="white" opacity="0.1"/>
+  <rect x="100" y="70" width="70" height="22" rx="11" fill="#CFFE25" opacity="0.1" stroke="#CFFE25" stroke-width="0.5" opacity="0.3"/>
+  <rect x="108" y="78" width="54" height="6" rx="3" fill="#CFFE25" opacity="0.2"/>
+  <rect x="180" y="70" width="50" height="22" rx="11" fill="white" opacity="0.06"/>
+  <rect x="188" y="78" width="34" height="6" rx="3" fill="white" opacity="0.1"/>
+  <!-- Product grid -->
+  <rect x="30" y="110" width="105" height="70" rx="4" fill="white" opacity="0.04"/>
+  <rect x="40" y="122" width="85" height="6" rx="3" fill="white" opacity="0.1"/>
+  <rect x="40" y="134" width="55" height="4" rx="2" fill="white" opacity="0.06"/>
+  <rect x="40" y="148" width="30" height="16" rx="3" fill="#CFFE25" opacity="0.1"/>
+  
+  <rect x="148" y="110" width="105" height="70" rx="4" fill="white" opacity="0.04" stroke="#CFFE25" stroke-width="0.5" opacity="0.2"/>
+  <rect x="158" y="122" width="85" height="6" rx="3" fill="white" opacity="0.1"/>
+  <rect x="158" y="134" width="55" height="4" rx="2" fill="white" opacity="0.06"/>
+  <rect x="158" y="148" width="40" height="16" rx="3" fill="#CFFE25" opacity="0.15"/>
+  
+  <rect x="266" y="110" width="105" height="70" rx="4" fill="white" opacity="0.04"/>
+  <rect x="276" y="122" width="85" height="6" rx="3" fill="white" opacity="0.1"/>
+  <rect x="276" y="134" width="55" height="4" rx="2" fill="white" opacity="0.06"/>
+  <rect x="276" y="148" width="35" height="16" rx="3" fill="#CFFE25" opacity="0.08"/>
+</svg>

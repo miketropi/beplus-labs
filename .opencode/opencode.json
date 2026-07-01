@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [".agents/skills"]
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": "allow",
+    "read": "allow",
+    "webfetch": "allow",
+    "external_directory": "allow"
+  },
+  "instructions": ["AGENTS.md"],
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true
+    }
+  },
+  "experimental": {
+    "primary_tools": ["edit", "bash", "read", "write", "glob", "grep"]
+  }
+}
