@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { getAllProducts, TYPE_LABELS, type ChangelogEntry, type ProductChangelogGroup } from "@/lib/data";
+import { TYPE_LABELS, type Product, type ChangelogEntry, type ProductChangelogGroup } from "@/lib/data";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   paintbrush: Paintbrush,
@@ -27,8 +27,7 @@ const TYPE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   improvement: "outline",
 };
 
-function groupEntries(entries: ChangelogEntry[]): ProductChangelogGroup[] {
-  const products = getAllProducts();
+function groupEntries(entries: ChangelogEntry[], products: Product[]): ProductChangelogGroup[] {
 
   const grouped = new Map<string, ChangelogEntry[]>();
   for (const entry of entries) {
@@ -45,12 +44,13 @@ function groupEntries(entries: ChangelogEntry[]): ProductChangelogGroup[] {
 
 interface Props {
   entries: ChangelogEntry[];
+  products: Product[];
 }
 
-export function ChangelogContent({ entries }: Props) {
+export function ChangelogContent({ entries, products }: Props) {
   const [filter, setFilter] = useState<string | null>(null);
 
-  const groups = groupEntries(entries);
+  const groups = groupEntries(entries, products);
 
   const filtered = filter
     ? groups.filter((g) => g.product.slug === filter)
@@ -115,7 +115,7 @@ export function ChangelogContent({ entries }: Props) {
                     <h2 className="text-lg font-semibold text-foreground transition-colors group-hover:text-brand">
                       {product.name}
                     </h2>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       {entries.length} release{entries.length !== 1 ? "s" : ""}
                       <span className="ml-1 text-brand">· live</span>
                     </p>
@@ -136,10 +136,10 @@ export function ChangelogContent({ entries }: Props) {
                         >
                           {TYPE_LABELS[entry.type]}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-sm text-muted-foreground">
                           {entry.version}
                         </span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-sm text-muted-foreground">
                           {new Date(entry.date).toLocaleDateString("en-US", {
                             weekday: "short",
                             month: "short",

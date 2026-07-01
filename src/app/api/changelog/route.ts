@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       );
     }
   } else {
-    entries = getAllChangelogEntries();
+    entries = await getAllChangelogEntries();
   }
 
   return NextResponse.json(entries, {

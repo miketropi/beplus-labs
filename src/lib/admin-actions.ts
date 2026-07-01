@@ -26,6 +26,7 @@ export async function createProduct(formData: FormData) {
   const coverImage = formData.get("coverImage") as string;
   const category = formData.get("category") as string;
   const github = (formData.get("github") as string) || undefined;
+  const liveDemo = (formData.get("liveDemo") as string) || undefined;
 
   if (!slug || !name) return { error: "Slug and name are required." };
 
@@ -45,6 +46,7 @@ export async function createProduct(formData: FormData) {
       coverImage,
       category,
       github,
+      liveDemo,
     },
   });
 
@@ -56,6 +58,7 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(slug: string, formData: FormData) {
   await guard();
 
+  const newSlug = formData.get("slug") as string;
   const name = formData.get("name") as string;
   const tagline = formData.get("tagline") as string;
   const description = formData.get("description") as string;
@@ -65,27 +68,54 @@ export async function updateProduct(slug: string, formData: FormData) {
   const coverImage = formData.get("coverImage") as string;
   const category = formData.get("category") as string;
   const github = (formData.get("github") as string) || undefined;
+  const liveDemo = (formData.get("liveDemo") as string) || undefined;
 
-  if (!name) return { error: "Name is required." };
+  if (!newSlug || !name) return { error: "Slug and name are required." };
 
   const features = featuresRaw
     ? featuresRaw.split("\n").map((f) => f.trim()).filter(Boolean)
     : [];
 
-  await prisma.product.update({
-    where: { slug },
-    data: {
-      name,
-      tagline,
-      description,
-      features,
-      status: status as "dev" | "beta" | "launched",
-      icon,
-      coverImage,
-      category,
-      github,
-    },
-  });
+  if (newSlug !== slug) {
+    await prisma.$transaction([
+      prisma.changelogEntry.updateMany({
+        where: { productSlug: slug },
+        data: { productSlug: newSlug },
+      }),
+      prisma.product.update({
+        where: { slug },
+        data: {
+          slug: newSlug,
+          name,
+          tagline,
+          description,
+          features,
+          status: status as "dev" | "beta" | "launched",
+          icon,
+          coverImage,
+          category,
+          github,
+          liveDemo,
+        },
+      }),
+    ]);
+  } else {
+    await prisma.product.update({
+      where: { slug },
+      data: {
+        name,
+        tagline,
+        description,
+        features,
+        status: status as "dev" | "beta" | "launched",
+        icon,
+        coverImage,
+        category,
+        github,
+        liveDemo,
+      },
+    });
+  }
 
   revalidatePath("/products");
   revalidatePath("/admin/products");

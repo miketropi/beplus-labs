@@ -1,5 +1,4 @@
-import products from "@/data/products.json";
-import changelog from "@/data/changelog.json";
+import { prisma } from "@/lib/prisma";
 
 export interface Product {
   slug: string;
@@ -12,6 +11,7 @@ export interface Product {
   coverImage: string;
   category: string;
   github?: string;
+  liveDemo?: string;
 }
 
 export interface ChangelogEntry {
@@ -23,16 +23,30 @@ export interface ChangelogEntry {
   type: "feature" | "fix" | "improvement";
 }
 
-export function getAllProducts(): Product[] {
-  return products as Product[];
+export async function getAllProducts(): Promise<Product[]> {
+  const products = await prisma.product.findMany({ orderBy: { id: "asc" } });
+  return products.map((p) => ({
+    ...p,
+    features: p.features as string[],
+    github: p.github ?? undefined,
+    liveDemo: p.liveDemo ?? undefined,
+  }));
 }
 
-export function getProduct(slug: string): Product | undefined {
-  return (products as Product[]).find((p) => p.slug === slug);
+export async function getProduct(slug: string): Promise<Product | undefined> {
+  const product = await prisma.product.findUnique({ where: { slug } });
+  if (!product) return undefined;
+  return {
+    ...product,
+    features: product.features as string[],
+    github: product.github ?? undefined,
+    liveDemo: product.liveDemo ?? undefined,
+  };
 }
 
-export function getProductsByCategory(): Record<string, Product[]> {
-  return (products as Product[]).reduce(
+export async function getProductsByCategory(): Promise<Record<string, Product[]>> {
+  const products = await getAllProducts();
+  return products.reduce(
     (acc, product) => {
       const cat = product.category;
       if (!acc[cat]) acc[cat] = [];
@@ -43,18 +57,28 @@ export function getProductsByCategory(): Record<string, Product[]> {
   );
 }
 
-export function getAllChangelogEntries(): ChangelogEntry[] {
-  return (changelog as ChangelogEntry[]).sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+export async function getAllChangelogEntries(): Promise<ChangelogEntry[]> {
+  const entries = await prisma.changelogEntry.findMany({
+    orderBy: { date: "desc" },
+  });
+  return entries.map((e) => ({
+    date: e.date.toISOString().slice(0, 10),
+    productSlug: e.productSlug,
+    title: e.title,
+    content: e.content,
+    version: e.version,
+    type: e.type as ChangelogEntry["type"],
+  }));
 }
 
-export function getChangelogForProduct(slug: string): ChangelogEntry[] {
-  return getAllChangelogEntries().filter((e) => e.productSlug === slug);
+export async function getChangelogForProduct(slug: string): Promise<ChangelogEntry[]> {
+  const all = await getAllChangelogEntries();
+  return all.filter((e) => e.productSlug === slug);
 }
 
-export function getChangelogByMonth(): Record<string, ChangelogEntry[]> {
-  return getAllChangelogEntries().reduce(
+export async function getChangelogByMonth(): Promise<Record<string, ChangelogEntry[]>> {
+  const all = await getAllChangelogEntries();
+  return all.reduce(
     (acc, entry) => {
       const date = new Date(entry.date);
       const key = date.toLocaleDateString("en-US", {
@@ -74,9 +98,11 @@ export interface ProductChangelogGroup {
   entries: ChangelogEntry[];
 }
 
-export function getChangelogByProduct(): ProductChangelogGroup[] {
-  const all = getAllChangelogEntries();
-  const products = getAllProducts();
+export async function getChangelogByProduct(): Promise<ProductChangelogGroup[]> {
+  const [all, products] = await Promise.all([
+    getAllChangelogEntries(),
+    getAllProducts(),
+  ]);
 
   const productOrder = products.filter((p) =>
     all.some((e) => e.productSlug === p.slug),

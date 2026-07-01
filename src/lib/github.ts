@@ -107,7 +107,8 @@ function truncateBody(body: string): string {
  */
 export async function fetchGitHubChangelog(): Promise<ChangelogEntry[]> {
   const { getAllProducts } = await import("./data");
-  const products = getAllProducts().filter((p) => p.github);
+  const allProducts = await getAllProducts();
+  const products = allProducts.filter((p) => p.github);
 
   const promises = products.map(async (product) => {
     const [owner, repo] = product.github!.split("/");

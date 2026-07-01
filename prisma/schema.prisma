@@ -24,13 +24,14 @@ model Product {
   slug       String           @unique
   name       String
   tagline    String
-  description String
+  description String @db.Text
   features   Json
   status     ProductStatus
   icon       String
   coverImage String           @default("")
   category   String
   github     String?
+  liveDemo   String?
 
   changelogEntries ChangelogEntry[]
 

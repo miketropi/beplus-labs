@@ -24,7 +24,7 @@ import {
   FieldSet,
   FieldTitle,
 } from "@/components/ui/field";
-import { getAllProducts } from "@/lib/data";
+import type { Product } from "@/lib/data";
 import { submitBetaRequest } from "@/lib/actions";
 import { TipTapEditor } from "@/components/shared/tiptap-editor";
 
@@ -53,8 +53,7 @@ function SubmitButton() {
 
 type FormState = { success?: boolean; error?: string } | null;
 
-export function BetaForm() {
-  const products = getAllProducts();
+export function BetaForm({ products }: { products: Product[] }) {
   const [state, formAction] = useActionState<FormState, FormData>(
     submitBetaRequest,
     null,
@@ -175,7 +174,7 @@ export function BetaForm() {
                 <label className="text-sm font-medium">
                   Tell us about your project
                 </label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Describe your use case, what you&apos;re building, and why
                   early access matters to you.
                 </p>
@@ -192,7 +191,7 @@ export function BetaForm() {
           <Separator />
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               No spam, ever. We&apos;ll only email you about your beta request.
             </p>
             <SubmitButton />
@@ -251,7 +250,7 @@ export function BetaForm() {
               <p className="text-sm font-medium text-foreground">
                 Open Source
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 All our products are MIT-licensed on GitHub.
               </p>
             </div>

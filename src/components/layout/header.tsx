@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Moon, Sun, ChevronDown } from "lucide-react";
-import { getAllProducts, STATUS_LABELS } from "@/lib/data";
+import type { Product } from "@/lib/data";
+import { STATUS_LABELS } from "@/lib/data";
 
 const NAV_LINKS = [
   { href: "/changelog", label: "Changelog" },
@@ -15,14 +16,12 @@ const NAV_LINKS = [
   { href: "/about", label: "About" },
 ];
 
-export function Header() {
+export function Header({ products }: { products: Product[] }) {
   const [dark, setDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const pathname = usePathname();
   const productsRef = useRef<HTMLDivElement>(null);
-
-  const products = getAllProducts();
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -104,11 +103,11 @@ export function Header() {
                   >
                     <div className="min-w-0 flex-1">
                       <p className="font-medium text-foreground">{p.name}</p>
-                      <p className="text-xs text-muted-foreground truncate">
+                      <p className="text-sm text-muted-foreground truncate">
                         {p.tagline}
                       </p>
                     </div>
-                    <span className="shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    <span className="shrink-0 rounded-full border px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
                       {STATUS_LABELS[p.status]}
                     </span>
                   </Link>
@@ -166,7 +165,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] pt-12">
               <nav className="flex flex-col gap-1">
-                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground">
+                <p className="px-2 py-1 text-sm font-semibold text-muted-foreground">
                   Products
                 </p>
                 {products.map((p) => (

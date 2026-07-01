@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { createProduct, updateProduct, deleteProduct } from "@/lib/admin-actions";
 import { Loader2, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { TipTapEditor } from "@/components/shared/tiptap-editor";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -31,6 +32,7 @@ type ProductData = {
   coverImage: string;
   category: string;
   github?: string | null;
+  liveDemo?: string | null;
 } | null;
 
 export function ProductForm({ product }: { product?: ProductData }) {
@@ -42,6 +44,7 @@ export function ProductForm({ product }: { product?: ProductData }) {
     },
     null,
   );
+  const [description, setDescription] = useState(product?.description ?? "");
 
   return (
     <form action={formAction} className="space-y-5">
@@ -58,8 +61,7 @@ export function ProductForm({ product }: { product?: ProductData }) {
             name="slug"
             defaultValue={product?.slug ?? ""}
             required
-            readOnly={!isNew}
-            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring read-only:opacity-60"
+            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
         <div className="space-y-2">
@@ -84,12 +86,8 @@ export function ProductForm({ product }: { product?: ProductData }) {
 
       <div className="space-y-2">
         <label className="text-sm font-medium">Description</label>
-        <textarea
-          name="description"
-          rows={4}
-          defaultValue={product?.description ?? ""}
-          className="flex w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-        />
+        <TipTapEditor value={description} onChange={setDescription} placeholder="Describe what this product does…" />
+        <input type="hidden" name="description" value={description} />
       </div>
 
       <div className="space-y-2">
@@ -124,6 +122,12 @@ export function ProductForm({ product }: { product?: ProductData }) {
             defaultValue={product?.icon ?? ""}
             className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
+          <p className="text-xs text-muted-foreground">
+            lucide icon name, e.g. <code className="rounded bg-muted px-1 py-0.5 text-[10px]">paintbrush</code>,{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-[10px]">menu</code>,{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-[10px]">sparkles</code>,{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-[10px]">search</code>
+          </p>
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Category</label>
@@ -144,15 +148,26 @@ export function ProductForm({ product }: { product?: ProductData }) {
         />
       </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium">
-          GitHub <span className="text-muted-foreground">(owner/repo)</span>
-        </label>
-        <input
-          name="github"
-          defaultValue={product?.github ?? ""}
-          className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-        />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">
+            GitHub <span className="text-muted-foreground">(owner/repo)</span>
+          </label>
+          <input
+            name="github"
+            defaultValue={product?.github ?? ""}
+            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Live Demo URL</label>
+          <input
+            name="liveDemo"
+            defaultValue={product?.liveDemo ?? ""}
+            placeholder="https://example.com"
+            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          />
+        </div>
       </div>
 
       <div className="flex items-center gap-3">

@@ -1,33 +1,19 @@
 import Link from "next/link";
+import { getAllProducts } from "@/lib/data";
 
-const FOOTER_LINKS = [
-  {
-    title: "Products",
-    links: [
-      { href: "/products", label: "All Products" },
-      { href: "/products/nextora", label: "Nextora" },
-      { href: "/products/beplus-visual-mega-nav", label: "Mega Nav" },
-      { href: "/products/prompt-to-pattern", label: "Prompt to Pattern" },
-      { href: "/products/beplus-fast-product-filter", label: "Product Filter" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "/about", label: "About" },
-      { href: "/changelog", label: "Changelog" },
-      { href: "/beta", label: "Beta Program" },
-    ],
-  },
-  {
-    title: "Connect",
-    links: [
-      { href: "/contact", label: "Contact" },
-    ],
-  },
+const COMPANY_LINKS = [
+  { href: "/about", label: "About" },
+  { href: "/changelog", label: "Changelog" },
+  { href: "/beta", label: "Beta Program" },
 ];
 
-export function Footer() {
+const CONNECT_LINKS = [
+  { href: "/contact", label: "Contact" },
+];
+
+export async function Footer() {
+  const products = await getAllProducts();
+
   return (
     <footer className="border-t bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -44,28 +30,64 @@ export function Footer() {
             </p>
           </div>
 
-          {FOOTER_LINKS.map((group) => (
-            <div key={group.title}>
-              <h4 className="text-sm font-semibold text-foreground">
-                {group.title}
-              </h4>
-              <ul className="mt-3 space-y-2">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-brand"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h4 className="text-sm font-semibold text-foreground">Products</h4>
+            <ul className="mt-3 space-y-2">
+              <li>
+                <Link
+                  href="/products"
+                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                >
+                  All Products
+                </Link>
+              </li>
+              {products.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/products/${p.slug}`}
+                    className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  >
+                    {p.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-foreground">Company</h4>
+            <ul className="mt-3 space-y-2">
+              {COMPANY_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-foreground">Connect</h4>
+            <ul className="mt-3 space-y-2">
+              {CONNECT_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="mt-10 border-t pt-6 text-center text-xs text-muted-foreground">
+        <div className="mt-10 border-t pt-6 text-center text-sm text-muted-foreground">
           &copy; {new Date().getFullYear()} BePlus Labs. All rights reserved.
         </div>
       </div>

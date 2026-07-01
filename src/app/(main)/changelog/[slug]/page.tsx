@@ -43,7 +43,7 @@ export default async function ChangelogEntryPage({
 
   if (!entry) notFound();
 
-  const product = getProduct(entry.productSlug);
+  const product = await getProduct(entry.productSlug);
   const idx = entries.findIndex((e) => e.date === slug);
   const prev = idx < entries.length - 1 ? entries[idx + 1] : null;
   const next = idx > 0 ? entries[idx - 1] : null;
@@ -64,7 +64,7 @@ export default async function ChangelogEntryPage({
           {product && (
             <Link
               href={`/products/${product.slug}`}
-              className="text-xs font-medium text-brand hover:underline"
+              className="text-sm font-medium text-brand hover:underline"
             >
               {product.name}
             </Link>

@@ -17,15 +17,15 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   launched: "outline",
 };
 
-const STATS = [
-  { icon: Package, label: "Products", value: "4" },
-  { icon: GitBranch, label: "Repositories", value: "4" },
-  { icon: Star, label: "Active Installs", value: "1K+" },
-  { icon: Zap, label: "Total Releases", value: "28" },
-];
+export default async function HomePage() {
+  const products = await getAllProducts();
 
-export default function HomePage() {
-  const products = getAllProducts();
+  const STATS = [
+    { icon: Package, label: "Products", value: String(products.length) },
+    { icon: GitBranch, label: "Repositories", value: String(products.filter((p) => p.github).length) },
+    { icon: Star, label: "Active Installs", value: "1K+" },
+    { icon: Zap, label: "Total Releases", value: "28" },
+  ];
 
   return (
     <div>

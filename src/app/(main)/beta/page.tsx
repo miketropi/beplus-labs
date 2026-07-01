@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Check, Rocket } from "lucide-react";
 import { BetaForm } from "./beta-form";
+import { getAllProducts } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Beta Program",
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
     "Get early access to BePlus Labs WordPress products. Join our beta program and help shape the future of open-source WordPress tooling.",
 };
 
-export default function BetaPage() {
+export default async function BetaPage() {
+  const products = await getAllProducts();
+
   return (
     <div className="px-4 py-16 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-4xl">
@@ -25,7 +28,7 @@ export default function BetaPage() {
           </p>
         </div>
 
-        <BetaForm />
+        <BetaForm products={products} />
 
         {/* Perks */}
         <div className="mt-14 grid gap-6 sm:grid-cols-3">

@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     "Explore all BePlus Labs products — deployment, analytics, authentication, monitoring, and more.",
 };
 
-export default function ProductsPage() {
-  const products = getAllProducts();
+export default async function ProductsPage() {
+  const products = await getAllProducts();
 
   return (
     <div className="px-4 py-16 sm:px-6 sm:py-20">
@@ -83,7 +83,7 @@ export default function ProductsPage() {
                   )}
                 </div>
 
-                <div className="mt-auto flex items-center gap-1 pt-1 text-xs font-medium text-brand transition-all group-hover:gap-2">
+                <div className="mt-auto flex items-center gap-1 pt-1 text-sm font-medium text-brand transition-all group-hover:gap-2">
                   Details <ArrowRight className="h-3.5 w-3.5" />
                 </div>
               </div>

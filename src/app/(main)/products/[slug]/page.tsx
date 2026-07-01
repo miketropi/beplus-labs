@@ -28,7 +28,8 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
 };
 
 export async function generateStaticParams() {
-  return getAllProducts().map((p) => ({ slug: p.slug }));
+  const products = await getAllProducts();
+  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -37,7 +38,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "Not Found" };
 
   return {
@@ -52,12 +53,15 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const [product, allProducts] = await Promise.all([
+    getProduct(slug),
+    getAllProducts(),
+  ]);
 
   if (!product) notFound();
 
   const Icon = ICON_MAP[product.icon];
-  const otherProducts = getAllProducts().filter((p) => p.slug !== slug);
+  const otherProducts = allProducts.filter((p) => p.slug !== slug);
 
   // Fetch GitHub releases for this product
   let release = null;
@@ -97,7 +101,7 @@ export default async function ProductPage({
                     <a
                       href={release.downloadUrl}
                       rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-xs font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
+                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
                     >
                       <Download className="size-3.5" />
                       Download {release.tag}
@@ -106,32 +110,45 @@ export default async function ProductPage({
                       href={release.pageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1 rounded-lg border px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand-bright/40 hover:text-foreground"
+                      className="inline-flex h-8 items-center gap-1 rounded-lg border px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand-bright/40 hover:text-foreground"
                     >
                       <ExternalLink className="size-3.5" />
                     </a>
                   </>
                 )}
+                {product.liveDemo && (
+                  <a
+                    href={product.liveDemo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
+                  >
+                    <ExternalLink className="size-3.5" />
+                    Live Demo
+                  </a>
+                )}
               </div>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">{product.category}</p>
-            {product.github && (
-              <a
-                href={`https://github.com/${product.github}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1.5 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-brand"
-              >
-                <ExternalLink className="size-3" />
-                {product.github}
-              </a>
-            )}
+            <div className="mt-1.5 flex flex-wrap items-center gap-3">
+              {product.github && (
+                <a
+                  href={`https://github.com/${product.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
+                >
+                  <ExternalLink className="size-3" />
+                  {product.github}
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Tagline */}
         <p className="text-xl leading-relaxed text-foreground">{product.tagline}</p>
-        <p className="mt-4 text-muted-foreground leading-relaxed">{product.description}</p>
+        <div className="tiptap-rendered" dangerouslySetInnerHTML={{ __html: product.description }} />
 
         {/* Features */}
         <div className="mt-10">
@@ -194,8 +211,8 @@ export default async function ProductPage({
                     <Badge variant="outline" className="text-xs">
                       {entry.type}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">{entry.version}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">{entry.version}</span>
+                    <span className="text-sm text-muted-foreground">
                       {new Date(entry.date).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -234,7 +251,7 @@ export default async function ProductPage({
                   )}
                   <div>
                     <p className="text-sm font-medium text-foreground">{p.name}</p>
-                    <p className="text-xs text-muted-foreground">{p.tagline}</p>
+                    <p className="text-sm text-muted-foreground">{p.tagline}</p>
                   </div>
                 </Link>
               );
