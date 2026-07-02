@@ -87,6 +87,53 @@ export function contactNotification(data: ContactFormData) {
   `);
 }
 
+type DownloadData = {
+  name: string;
+  email: string;
+  productName: string;
+  releaseTag: string;
+  downloadUrl: string;
+};
+
+export function downloadLinkEmail(data: DownloadData) {
+  return wrap(`
+    <h2 style="margin:0 0 12px;font-size:18px;color:#111;">Your download is ready!</h2>
+    <p style="margin:0 0 12px;font-size:14px;color:#333;line-height:1.6;">Hi ${data.name},</p>
+    <p style="margin:0 0 4px;font-size:14px;color:#333;line-height:1.6;">
+      Thank you for your interest in <strong>${data.productName}</strong>.
+    </p>
+    <p style="margin:0 0 16px;font-size:14px;color:#333;line-height:1.6;">
+      Click the button below to download version ${data.releaseTag}:
+    </p>
+    <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+      <tr>
+        <td align="center" style="background:#CFFE25;border-radius:8px;padding:12px 24px;">
+          <a href="${data.downloadUrl}" style="color:#111;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;">
+            Download ${data.productName} ${data.releaseTag}
+          </a>
+        </td>
+      </tr>
+    </table>
+    <p style="margin:0 0 12px;font-size:14px;color:#333;line-height:1.6;">
+      If the button doesn't work, copy and paste this URL into your browser:
+    </p>
+    <p style="margin:0 0 16px;font-size:12px;color:#888;word-break:break-all;">${data.downloadUrl}</p>
+    <p style="margin:0;font-size:14px;color:#333;">— The BePlus Labs Team</p>
+  `);
+}
+
+export function downloadNotification(data: DownloadData & { ip?: string }) {
+  return wrap(`
+    <h2 style="margin:0 0 16px;font-size:18px;color:#111;">New Download</h2>
+    <table cellpadding="0" cellspacing="0" style="font-size:14px;color:#333;line-height:1.6;">
+      <tr><td style="padding:4px 0;"><strong>Product</strong></td><td style="padding:4px 0;padding-left:12px;">${data.productName} (${data.releaseTag})</td></tr>
+      <tr><td style="padding:4px 0;"><strong>Name</strong></td><td style="padding:4px 0;padding-left:12px;">${data.name}</td></tr>
+      <tr><td style="padding:4px 0;"><strong>Email</strong></td><td style="padding:4px 0;padding-left:12px;"><a href="mailto:${data.email}" style="color:#6B8C0D;">${data.email}</a></td></tr>
+      ${data.ip ? `<tr><td style="padding:4px 0;"><strong>IP</strong></td><td style="padding:4px 0;padding-left:12px;">${data.ip}</td></tr>` : ""}
+    </table>
+  `);
+}
+
 export function contactConfirmationEmail(name: string) {
   return wrap(`
     <h2 style="margin:0 0 12px;font-size:18px;color:#111;">We received your message</h2>

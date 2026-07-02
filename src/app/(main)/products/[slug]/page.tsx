@@ -3,11 +3,12 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Download, ExternalLink, MessageSquareText } from "lucide-react";
+import { ArrowRight, Check, ExternalLink, MessageSquareText } from "lucide-react";
 import { Paintbrush, Menu, Sparkles, Search, Rocket, BarChart3, Shield, MessageSquare, Activity, Flag, type LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Badge } from "@/components/ui/badge";
 import { GalleryModal } from "@/components/shared/gallery-modal";
+import { DownloadButton } from "@/components/shared/download-button";
 import { getProduct, getAllProducts, STATUS_LABELS } from "@/lib/data";
 import { getLatestRelease, fetchReleases, mapRelease } from "@/lib/github";
 
@@ -96,14 +97,12 @@ export default async function ProductPage({
                 </Badge>
                 {release && (
                   <>
-                    <a
-                      href={release.downloadUrl}
-                      rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
-                    >
-                      <Download className="size-3.5" />
-                      Download {release.tag}
-                    </a>
+                    <DownloadButton
+                      downloadUrl={release.downloadUrl}
+                      releaseTag={release.tag}
+                      productSlug={slug}
+                      productName={product.name}
+                    />
                     <a
                       href={release.pageUrl}
                       target="_blank"

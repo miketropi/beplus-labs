@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Package,
   MessageSquare,
+  Download,
   LogOut,
   Menu,
   X,
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/downloads", label: "Downloads", icon: Download },
   { href: "/admin/feedback", label: "Feedback", icon: MessageSquare },
 ];
 

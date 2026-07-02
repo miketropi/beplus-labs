@@ -45,6 +45,26 @@ enum FeedbackCategory {
   general
 }
 
+model DownloadLog {
+  id          Int      @id @default(autoincrement())
+  email       String
+  productSlug String
+  productName String
+  releaseTag  String
+  downloadUrl String
+  ip          String?
+  userAgent   String?
+  referer     String?
+  country     String?
+  city        String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@index([productSlug])
+  @@index([createdAt])
+}
+
 model Feedback {
   id         Int              @id @default(autoincrement())
   name       String
