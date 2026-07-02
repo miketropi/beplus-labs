@@ -29,6 +29,7 @@ type ProductData = {
   features: string[];
   gallery?: string[];
   status: string;
+  publishStatus: string;
   icon: string;
   coverImage: string;
   category: string;
@@ -55,7 +56,7 @@ export function ProductForm({ product }: { product?: ProductData }) {
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-2">
           <label className="text-sm font-medium">Slug</label>
           <input
@@ -73,6 +74,17 @@ export function ProductForm({ product }: { product?: ProductData }) {
             required
             className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Publish Status</label>
+          <select
+            name="publishStatus"
+            defaultValue={product?.publishStatus ?? "pending"}
+            className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            <option value="public">Public</option>
+            <option value="pending">Pending</option>
+          </select>
         </div>
       </div>
 
@@ -103,9 +115,11 @@ export function ProductForm({ product }: { product?: ProductData }) {
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Status</label>
+          <label className="text-sm font-medium">
+            Product Status <span className="text-xs text-muted-foreground">(dev/beta/launched)</span>
+          </label>
           <select
             name="status"
             defaultValue={product?.status ?? "dev"}
@@ -116,6 +130,7 @@ export function ProductForm({ product }: { product?: ProductData }) {
             <option value="launched">Launched</option>
           </select>
         </div>
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Icon</label>
           <input

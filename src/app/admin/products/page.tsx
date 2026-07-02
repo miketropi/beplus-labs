@@ -18,6 +18,11 @@ export default async function AdminProductsPage() {
       "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   };
 
+  const publishColor: Record<string, string> = {
+    public: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+    pending: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+  };
+
   return (
     <div className="max-w-5xl">
       {/* Page header */}
@@ -57,6 +62,9 @@ export default async function AdminProductsPage() {
                 Status
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Publish
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Category
               </th>
               <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -68,7 +76,7 @@ export default async function AdminProductsPage() {
             {products.length === 0 && (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={6}
                   className="px-4 py-12 text-center text-sm text-muted-foreground"
                 >
                   No products found.{" "}
@@ -101,6 +109,15 @@ export default async function AdminProductsPage() {
                     }`}
                   >
                     {p.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                      publishColor[p.publishStatus] || ""
+                    }`}
+                  >
+                    {p.publishStatus}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">
