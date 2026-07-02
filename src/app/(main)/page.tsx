@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { ArrowRight, GitBranch, Star, Package, Zap, Paintbrush, Menu, Sparkles, Search, MessageSquareText, type LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
