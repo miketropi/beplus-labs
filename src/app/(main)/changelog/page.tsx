@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fetchGitHubChangelog } from "@/lib/github";
-import type { ChangelogEntry } from "@/lib/data";
+import { getAllProducts, type ChangelogEntry } from "@/lib/data";
 import { ChangelogContent } from "./changelog-content";
 
 export const metadata: Metadata = {
@@ -17,6 +17,13 @@ export default async function ChangelogPage() {
     entries = [];
   }
 
+  let products: Awaited<ReturnType<typeof getAllProducts>> = [];
+  try {
+    products = await getAllProducts();
+  } catch {
+    // DB not connected
+  }
+
   return (
     <div className="px-4 py-16 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-4xl">
@@ -27,7 +34,7 @@ export default async function ChangelogPage() {
           Live updates from GitHub — the latest releases across all BePlus Labs products.
         </p>
 
-        <ChangelogContent entries={entries} />
+        <ChangelogContent entries={entries} products={products} />
       </div>
     </div>
   );

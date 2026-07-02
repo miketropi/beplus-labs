@@ -11,10 +11,6 @@ interface GitHubRelease {
   assets: Array<{ browser_download_url: string; name: string }>;
 }
 
-/**
- * Fetch releases from GitHub's public API.
- * No auth token needed for public repos (rate limit: 60 req/hr per IP).
- */
 export async function fetchReleases(
   owner: string,
   repo: string,
@@ -39,10 +35,6 @@ export interface LatestRelease {
   pageUrl: string;
 }
 
-/**
- * Get the latest release download URL for a product.
- * Prefers a .zip asset, then falls back to zipball_url.
- */
 export async function getLatestRelease(
   github: string,
 ): Promise<LatestRelease | null> {
@@ -62,10 +54,6 @@ export async function getLatestRelease(
   };
 }
 
-/**
- * Map a GitHub release to our ChangelogEntry format.
- * Infers type from conventional-commit-style tag names or body keywords.
- */
 export function mapRelease(
   release: GitHubRelease,
   productSlug: string,
@@ -94,20 +82,16 @@ function inferType(body: string, tag: string): ChangelogEntry["type"] {
 
 function truncateBody(body: string): string {
   if (!body) return "";
-  // Take the first meaningful paragraph (up to ~300 chars)
   const cleaned = body.replace(/^##?\s*.*$/gm, "").trim();
   const firstPara = cleaned.split("\n\n")[0] || cleaned;
   if (firstPara.length <= 300) return firstPara;
   return firstPara.slice(0, 300) + "…";
 }
 
-/**
- * Fetch all changelog entries from GitHub releases for all products.
- * Returns entries sorted newest-first.
- */
 export async function fetchGitHubChangelog(): Promise<ChangelogEntry[]> {
   const { getAllProducts } = await import("./data");
-  const products = getAllProducts().filter((p) => p.github);
+  const allProducts = await getAllProducts();
+  const products = allProducts.filter((p) => p.github);
 
   const promises = products.map(async (product) => {
     const [owner, repo] = product.github!.split("/");

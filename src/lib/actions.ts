@@ -1,45 +1,58 @@
 "use server";
 
+import { prisma } from "@/lib/prisma";
 import { sendEmail, sendNotification } from "@/lib/mail";
 import {
-  betaRequestNotification,
-  betaConfirmationEmail,
+  feedbackNotification,
+  feedbackConfirmationEmail,
   contactNotification,
   contactConfirmationEmail,
 } from "@/lib/email-templates";
+import { revalidatePath } from "next/cache";
 
 type ActionResult = { success?: boolean; error?: string } | null;
 
-export async function submitBetaRequest(
+export async function submitFeedback(
   _prev: ActionResult,
   formData: FormData,
 ): Promise<ActionResult> {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
-  const company = (formData.get("company") as string) || undefined;
-  const products = formData.getAll("products") as string[];
-  const description = (formData.get("description") as string) || undefined;
+  const category = formData.get("category") as string;
+  const productSlug = formData.get("productSlug") as string;
+  const message = formData.get("message") as string;
 
-  if (!name || !email) {
-    return { error: "Name and email are required." };
+  if (!name || !email || !message) {
+    return { error: "Name, email, and message are required." };
   }
 
   try {
+    await prisma.feedback.create({
+      data: {
+        name,
+        email,
+        category: category as "bug" | "feature" | "improvement" | "general",
+        productSlug: productSlug || null,
+        message,
+      },
+    });
+
     await sendNotification({
-      subject: `[Beta] New request from ${name}`,
-      html: betaRequestNotification({ name, email, company, products, description }),
+      subject: `[Feedback] ${category} from ${name}${productSlug ? ` — ${productSlug}` : ""}`,
+      html: feedbackNotification({ name, email, category, productSlug, message }),
       replyTo: email,
     });
 
     await sendEmail({
       to: email,
-      subject: "Thanks for joining the BePlus Labs Beta!",
-      html: betaConfirmationEmail(name),
+      subject: "We received your feedback — BePlus Labs",
+      html: feedbackConfirmationEmail(name),
     });
 
+    revalidatePath("/admin");
     return { success: true };
   } catch (err) {
-    console.error("Failed to send beta email:", err);
+    console.error("Failed to submit feedback:", err);
     return { error: "Something went wrong. Please try again later." };
   }
 }

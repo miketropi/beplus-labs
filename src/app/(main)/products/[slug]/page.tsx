@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Download, ExternalLink } from "lucide-react";
+import { ArrowRight, Check, Download, ExternalLink, MessageSquareText } from "lucide-react";
 import { Paintbrush, Menu, Sparkles, Search, Rocket, BarChart3, Shield, MessageSquare, Activity, Flag, type LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Badge } from "@/components/ui/badge";
+import { GalleryModal } from "@/components/shared/gallery-modal";
 import { getProduct, getAllProducts, STATUS_LABELS } from "@/lib/data";
 import { getLatestRelease, fetchReleases, mapRelease } from "@/lib/github";
 
@@ -28,7 +29,8 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
 };
 
 export async function generateStaticParams() {
-  return getAllProducts().map((p) => ({ slug: p.slug }));
+  const products = await getAllProducts();
+  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -37,7 +39,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "Not Found" };
 
   return {
@@ -52,12 +54,15 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const [product, allProducts] = await Promise.all([
+    getProduct(slug),
+    getAllProducts(),
+  ]);
 
   if (!product) notFound();
 
   const Icon = ICON_MAP[product.icon];
-  const otherProducts = getAllProducts().filter((p) => p.slug !== slug);
+  const otherProducts = allProducts.filter((p) => p.slug !== slug);
 
   // Fetch GitHub releases for this product
   let release = null;
@@ -97,7 +102,7 @@ export default async function ProductPage({
                     <a
                       href={release.downloadUrl}
                       rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-xs font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
+                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
                     >
                       <Download className="size-3.5" />
                       Download {release.tag}
@@ -106,32 +111,67 @@ export default async function ProductPage({
                       href={release.pageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1 rounded-lg border px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand-bright/40 hover:text-foreground"
+                      className="inline-flex h-8 items-center gap-1 rounded-lg border px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand-bright/40 hover:text-foreground"
                     >
                       <ExternalLink className="size-3.5" />
                     </a>
                   </>
                 )}
+                {product.liveDemo && (
+                  <a
+                    href={product.liveDemo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-bright px-3 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-bright/80"
+                  >
+                    <ExternalLink className="size-3.5" />
+                    Live Demo
+                  </a>
+                )}
               </div>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">{product.category}</p>
-            {product.github && (
-              <a
-                href={`https://github.com/${product.github}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1.5 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-brand"
-              >
-                <ExternalLink className="size-3" />
-                {product.github}
-              </a>
-            )}
+            <div className="mt-1.5 flex flex-wrap items-center gap-3">
+              {product.github && (
+                <a
+                  href={`https://github.com/${product.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
+                >
+                  <ExternalLink className="size-3" />
+                  {product.github}
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Tagline */}
         <p className="text-xl leading-relaxed text-foreground">{product.tagline}</p>
-        <p className="mt-4 text-muted-foreground leading-relaxed">{product.description}</p>
+        <div className="tiptap-rendered" dangerouslySetInnerHTML={{ __html: product.description }} />
+
+        {/* Gallery */}
+        {product.gallery && product.gallery.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-lg font-semibold text-foreground">Gallery</h2>
+            <div className="mt-4">
+              <GalleryModal images={product.gallery} />
+            </div>
+          </div>
+        )}
+
+        {/* Feedback notice */}
+        <div className="mt-10 rounded-xl border border-brand-bright/30 bg-brand-muted p-5 dark:bg-brand-bright/5">
+          <div className="flex items-start gap-3">
+            <MessageSquareText className="mt-0.5 size-5 shrink-0 text-brand-foreground dark:text-brand-bright" />
+            <p className="text-sm leading-relaxed text-foreground">
+              We encourage users to download and try out this product and share their
+              feedback during use. This will greatly help us develop a more complete product
+              that truly meets the needs of end users.
+            </p>
+          </div>
+        </div>
 
         {/* Features */}
         <div className="mt-10">
@@ -155,15 +195,15 @@ export default async function ProductPage({
                 : "This product is under active development."}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Be among the first to try it. Join our beta program for early access.
+              Help us improve. Your feedback shapes the roadmap.
             </p>
             <div className="mt-4">
               <ButtonLink
                 size="sm"
-                href="/beta"
+                href="/feedback"
                 className="bg-brand-bright text-brand-foreground hover:bg-brand-bright/90"
               >
-                Request Access <ArrowRight className="ml-2 h-4 w-4" />
+                Give Feedback <ArrowRight className="ml-2 h-4 w-4" />
               </ButtonLink>
             </div>
           </div>
@@ -194,8 +234,8 @@ export default async function ProductPage({
                     <Badge variant="outline" className="text-xs">
                       {entry.type}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">{entry.version}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">{entry.version}</span>
+                    <span className="text-sm text-muted-foreground">
                       {new Date(entry.date).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -234,7 +274,7 @@ export default async function ProductPage({
                   )}
                   <div>
                     <p className="text-sm font-medium text-foreground">{p.name}</p>
-                    <p className="text-xs text-muted-foreground">{p.tagline}</p>
+                    <p className="text-sm text-muted-foreground">{p.tagline}</p>
                   </div>
                 </Link>
               );

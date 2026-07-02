@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
-  GitCommit,
+  MessageSquare,
   LogOut,
   Menu,
   X,
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
-  { href: "/admin/changelog", label: "Changelog", icon: GitCommit },
+  { href: "/admin/feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 export function AdminNav() {

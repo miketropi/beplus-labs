@@ -24,13 +24,19 @@ export async function createProduct(formData: FormData) {
   const status = formData.get("status") as string;
   const icon = formData.get("icon") as string;
   const coverImage = formData.get("coverImage") as string;
+  const galleryRaw = formData.get("gallery") as string;
   const category = formData.get("category") as string;
   const github = (formData.get("github") as string) || undefined;
+  const liveDemo = (formData.get("liveDemo") as string) || undefined;
 
   if (!slug || !name) return { error: "Slug and name are required." };
 
   const features = featuresRaw
     ? featuresRaw.split("\n").map((f) => f.trim()).filter(Boolean)
+    : [];
+
+  const gallery = galleryRaw
+    ? galleryRaw.split("\n").map((u) => u.trim()).filter(Boolean)
     : [];
 
   await prisma.product.create({
@@ -40,11 +46,13 @@ export async function createProduct(formData: FormData) {
       tagline,
       description,
       features,
+      gallery,
       status: status as "dev" | "beta" | "launched",
       icon,
       coverImage,
       category,
       github,
+      liveDemo,
     },
   });
 
@@ -56,6 +64,7 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(slug: string, formData: FormData) {
   await guard();
 
+  const newSlug = formData.get("slug") as string;
   const name = formData.get("name") as string;
   const tagline = formData.get("tagline") as string;
   const description = formData.get("description") as string;
@@ -63,29 +72,57 @@ export async function updateProduct(slug: string, formData: FormData) {
   const status = formData.get("status") as string;
   const icon = formData.get("icon") as string;
   const coverImage = formData.get("coverImage") as string;
+  const galleryRaw = formData.get("gallery") as string;
   const category = formData.get("category") as string;
   const github = (formData.get("github") as string) || undefined;
+  const liveDemo = (formData.get("liveDemo") as string) || undefined;
 
-  if (!name) return { error: "Name is required." };
+  if (!newSlug || !name) return { error: "Slug and name are required." };
 
   const features = featuresRaw
     ? featuresRaw.split("\n").map((f) => f.trim()).filter(Boolean)
     : [];
 
-  await prisma.product.update({
-    where: { slug },
-    data: {
-      name,
-      tagline,
-      description,
-      features,
-      status: status as "dev" | "beta" | "launched",
-      icon,
-      coverImage,
-      category,
-      github,
-    },
-  });
+  const gallery = galleryRaw
+    ? galleryRaw.split("\n").map((u) => u.trim()).filter(Boolean)
+    : [];
+
+  if (newSlug !== slug) {
+    await prisma.product.update({
+      where: { slug },
+      data: {
+        slug: newSlug,
+        name,
+        tagline,
+        description,
+        features,
+        gallery,
+        status: status as "dev" | "beta" | "launched",
+        icon,
+        coverImage,
+        category,
+        github,
+        liveDemo,
+      },
+    });
+  } else {
+    await prisma.product.update({
+      where: { slug },
+      data: {
+        name,
+        tagline,
+        description,
+        features,
+        gallery,
+        status: status as "dev" | "beta" | "launched",
+        icon,
+        coverImage,
+        category,
+        github,
+        liveDemo,
+      },
+    });
+  }
 
   revalidatePath("/products");
   revalidatePath("/admin/products");
@@ -95,7 +132,6 @@ export async function updateProduct(slug: string, formData: FormData) {
 export async function deleteProduct(slug: string) {
   await guard();
 
-  await prisma.changelogEntry.deleteMany({ where: { productSlug: slug } });
   await prisma.product.delete({ where: { slug } });
 
   revalidatePath("/products");
@@ -104,78 +140,25 @@ export async function deleteProduct(slug: string) {
   redirect("/admin/products");
 }
 
-// ─── Changelog ─────────────────────────────────────────
+// ─── Feedback ──────────────────────────────────────────
 
-export async function createChangelogEntry(formData: FormData) {
+export async function markFeedbackRead(id: number) {
   await guard();
 
-  const date = formData.get("date") as string;
-  const productSlug = formData.get("productSlug") as string;
-  const title = formData.get("title") as string;
-  const content = formData.get("content") as string;
-  const version = formData.get("version") as string;
-  const type = formData.get("type") as string;
-
-  if (!date || !productSlug || !title) {
-    return { error: "Date, product, and title are required." };
-  }
-
-  await prisma.changelogEntry.create({
-    data: {
-      date: new Date(date),
-      productSlug,
-      title,
-      content: content || "",
-      version: version || "",
-      type: type as "feature" | "fix" | "improvement",
-    },
-  });
-
-  revalidatePath("/changelog");
-  revalidatePath("/admin/changelog");
-  redirect("/admin/changelog");
-}
-
-export async function updateChangelogEntry(
-  id: number,
-  formData: FormData,
-) {
-  await guard();
-
-  const date = formData.get("date") as string;
-  const productSlug = formData.get("productSlug") as string;
-  const title = formData.get("title") as string;
-  const content = formData.get("content") as string;
-  const version = formData.get("version") as string;
-  const type = formData.get("type") as string;
-
-  if (!date || !productSlug || !title) {
-    return { error: "Date, product, and title are required." };
-  }
-
-  await prisma.changelogEntry.update({
+  await prisma.feedback.update({
     where: { id },
-    data: {
-      date: new Date(date),
-      productSlug,
-      title,
-      content: content || "",
-      version: version || "",
-      type: type as "feature" | "fix" | "improvement",
-    },
+    data: { read: true },
   });
 
-  revalidatePath("/changelog");
-  revalidatePath("/admin/changelog");
-  redirect("/admin/changelog");
+  revalidatePath("/admin/feedback");
 }
 
-export async function deleteChangelogEntry(id: number) {
+export async function deleteFeedback(id: number) {
   await guard();
 
-  await prisma.changelogEntry.delete({ where: { id } });
+  await prisma.feedback.delete({ where: { id } });
 
-  revalidatePath("/changelog");
-  revalidatePath("/admin/changelog");
-  redirect("/admin/changelog");
+  revalidatePath("/admin/feedback");
 }
+
+
