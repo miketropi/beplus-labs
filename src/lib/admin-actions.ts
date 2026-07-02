@@ -22,6 +22,7 @@ export async function createProduct(formData: FormData) {
   const description = formData.get("description") as string;
   const featuresRaw = formData.get("features") as string;
   const status = formData.get("status") as string;
+  const publishStatus = formData.get("publishStatus") as string;
   const icon = formData.get("icon") as string;
   const coverImage = formData.get("coverImage") as string;
   const galleryRaw = formData.get("gallery") as string;
@@ -48,6 +49,7 @@ export async function createProduct(formData: FormData) {
       features,
       gallery,
       status: status as "dev" | "beta" | "launched",
+      publishStatus: publishStatus as "public" | "pending",
       icon,
       coverImage,
       category,
@@ -70,6 +72,7 @@ export async function updateProduct(slug: string, formData: FormData) {
   const description = formData.get("description") as string;
   const featuresRaw = formData.get("features") as string;
   const status = formData.get("status") as string;
+  const publishStatus = formData.get("publishStatus") as string;
   const icon = formData.get("icon") as string;
   const coverImage = formData.get("coverImage") as string;
   const galleryRaw = formData.get("gallery") as string;
@@ -98,6 +101,7 @@ export async function updateProduct(slug: string, formData: FormData) {
         features,
         gallery,
         status: status as "dev" | "beta" | "launched",
+        publishStatus: publishStatus as "public" | "pending",
         icon,
         coverImage,
         category,
@@ -115,6 +119,7 @@ export async function updateProduct(slug: string, formData: FormData) {
         features,
         gallery,
         status: status as "dev" | "beta" | "launched",
+        publishStatus: publishStatus as "public" | "pending",
         icon,
         coverImage,
         category,

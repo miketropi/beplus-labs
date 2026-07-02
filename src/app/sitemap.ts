@@ -4,7 +4,7 @@ import { getAllProducts } from "@/lib/data";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://beplus.dev";
 
-  const productPages = await getAllProducts().then((products) =>
+  const productPages = await getAllProducts({ publishedOnly: true }).then((products) =>
     products.map((p) => ({
       url: `${baseUrl}/products/${p.slug}`,
       lastModified: new Date(),

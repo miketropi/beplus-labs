@@ -36,7 +36,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const product = await getProduct(slug, { publishedOnly: true });
   if (!product) return { title: "Not Found" };
 
   return {
@@ -52,8 +52,8 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
   const [product, allProducts] = await Promise.all([
-    getProduct(slug),
-    getAllProducts(),
+    getProduct(slug, { publishedOnly: true }),
+    getAllProducts({ publishedOnly: true }),
   ]);
 
   if (!product) notFound();

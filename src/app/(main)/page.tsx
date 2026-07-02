@@ -22,7 +22,7 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
 };
 
 export default async function HomePage() {
-  const products = await getAllProducts();
+  const products = await getAllProducts({ publishedOnly: true });
 
   const STATS = [
     { icon: Package, label: "Products", value: String(products.length) },

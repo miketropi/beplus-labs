@@ -13,23 +13,29 @@ enum ProductStatus {
   launched
 }
 
-model Product {
-  id         Int            @id @default(autoincrement())
-  slug       String         @unique
-  name       String
-  tagline    String
-  description String        @db.Text
-  features   Json
-  status     ProductStatus
-  icon       String
-  coverImage String         @default("")
-  gallery    Json           @default("[]")
-  category   String
-  github     String?
-  liveDemo   String?
+enum PublishStatus {
+  public
+  pending
+}
 
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
+model Product {
+  id            Int            @id @default(autoincrement())
+  slug          String         @unique
+  name          String
+  tagline       String
+  description   String         @db.Text
+  features      Json
+  status        ProductStatus
+  publishStatus PublishStatus  @default(pending)
+  icon          String
+  coverImage    String         @default("")
+  gallery       Json           @default("[]")
+  category      String
+  github        String?
+  liveDemo      String?
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 enum FeedbackCategory {

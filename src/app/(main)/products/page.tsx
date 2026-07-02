@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const products = await getAllProducts();
+  const products = await getAllProducts({ publishedOnly: true });
 
   return (
     <div className="px-4 py-16 sm:px-6 sm:py-20">

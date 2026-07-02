@@ -19,7 +19,7 @@ export default async function ChangelogPage() {
 
   let products: Awaited<ReturnType<typeof getAllProducts>> = [];
   try {
-    products = await getAllProducts();
+    products = await getAllProducts({ publishedOnly: true });
   } catch {
     // DB not connected
   }

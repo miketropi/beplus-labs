@@ -14,7 +14,7 @@ const CONNECT_LINKS = [
 ];
 
 export async function Footer() {
-  const products = await getAllProducts();
+  const products = await getAllProducts({ publishedOnly: true });
 
   return (
     <footer className="border-t bg-muted/30">

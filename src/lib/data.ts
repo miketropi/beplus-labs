@@ -8,6 +8,7 @@ export interface Product {
   features: string[];
   gallery: string[];
   status: "dev" | "beta" | "launched";
+  publishStatus: "public" | "pending";
   icon: string;
   coverImage: string;
   category: string;
@@ -15,8 +16,11 @@ export interface Product {
   liveDemo?: string;
 }
 
-export async function getAllProducts(): Promise<Product[]> {
-  const products = await prisma.product.findMany({ orderBy: { id: "asc" } });
+export async function getAllProducts(opts?: { publishedOnly?: boolean }): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    orderBy: { id: "asc" },
+    where: opts?.publishedOnly ? { publishStatus: "public" } : undefined,
+  });
   return products.map((p) => ({
     ...p,
     features: p.features as string[],
@@ -26,9 +30,10 @@ export async function getAllProducts(): Promise<Product[]> {
   }));
 }
 
-export async function getProduct(slug: string): Promise<Product | undefined> {
+export async function getProduct(slug: string, opts?: { publishedOnly?: boolean }): Promise<Product | undefined> {
   const product = await prisma.product.findUnique({ where: { slug } });
   if (!product) return undefined;
+  if (opts?.publishedOnly && product.publishStatus !== "public") return undefined;
   return {
     ...product,
     features: product.features as string[],
