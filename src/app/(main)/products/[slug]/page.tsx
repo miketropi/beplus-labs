@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -27,11 +29,6 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   beta: "default",
   launched: "outline",
 };
-
-export async function generateStaticParams() {
-  const products = await getAllProducts();
-  return products.map((p) => ({ slug: p.slug }));
-}
 
 export async function generateMetadata({
   params,
