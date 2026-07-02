@@ -12,7 +12,7 @@ import { STATUS_LABELS } from "@/lib/data";
 
 const NAV_LINKS = [
   { href: "/changelog", label: "Changelog" },
-  { href: "/beta", label: "Beta" },
+  { href: "/feedback", label: "Feedback" },
   { href: "/about", label: "About" },
 ];
 
@@ -75,7 +75,7 @@ export function Header({ products }: { products: Product[] }) {
             <button
               onClick={() => setProductsOpen(!productsOpen)}
               className={cn(
-                "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-brand",
+                "inline-flex items-center gap-1 rounded-md px-3 py-2  font-medium transition-colors hover:text-brand",
                 pathname.startsWith("/products")
                   ? "text-brand"
                   : "text-muted-foreground",
@@ -97,12 +97,12 @@ export function Header({ products }: { products: Product[] }) {
                     href={`/products/${p.slug}`}
                     onClick={() => setProductsOpen(false)}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-accent",
+                      "flex items-center gap-3 rounded-lg px-3 py-2.5  transition-colors hover:bg-accent",
                       pathname === `/products/${p.slug}` && "bg-accent",
                     )}
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-foreground">{p.name}</p>
+                      <p className="text-sm font-medium text-foreground">{p.name}</p>
                       <p className="text-sm text-muted-foreground truncate">
                         {p.tagline}
                       </p>
@@ -130,7 +130,7 @@ export function Header({ products }: { products: Product[] }) {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-brand",
+                "rounded-md px-3 py-2  font-medium transition-colors hover:text-brand",
                 pathname === link.href || pathname.startsWith(link.href + "/")
                   ? "text-brand"
                   : "text-muted-foreground",
@@ -194,7 +194,7 @@ export function Header({ products }: { products: Product[] }) {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-brand",
+                      "rounded-md px-3 py-2  font-medium transition-colors hover:text-brand",
                       pathname === link.href ||
                         pathname.startsWith(link.href + "/")
                         ? "text-brand"

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Download, ExternalLink } from "lucide-react";
+import { ArrowRight, Check, Download, ExternalLink, MessageSquareText } from "lucide-react";
 import { Paintbrush, Menu, Sparkles, Search, Rocket, BarChart3, Shield, MessageSquare, Activity, Flag, type LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Badge } from "@/components/ui/badge";
+import { GalleryModal } from "@/components/shared/gallery-modal";
 import { getProduct, getAllProducts, STATUS_LABELS } from "@/lib/data";
 import { getLatestRelease, fetchReleases, mapRelease } from "@/lib/github";
 
@@ -150,6 +151,28 @@ export default async function ProductPage({
         <p className="text-xl leading-relaxed text-foreground">{product.tagline}</p>
         <div className="tiptap-rendered" dangerouslySetInnerHTML={{ __html: product.description }} />
 
+        {/* Gallery */}
+        {product.gallery && product.gallery.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-lg font-semibold text-foreground">Gallery</h2>
+            <div className="mt-4">
+              <GalleryModal images={product.gallery} />
+            </div>
+          </div>
+        )}
+
+        {/* Feedback notice */}
+        <div className="mt-10 rounded-xl border border-brand-bright/30 bg-brand-muted p-5 dark:bg-brand-bright/5">
+          <div className="flex items-start gap-3">
+            <MessageSquareText className="mt-0.5 size-5 shrink-0 text-brand-foreground dark:text-brand-bright" />
+            <p className="text-sm leading-relaxed text-foreground">
+              We encourage users to download and try out this product and share their
+              feedback during use. This will greatly help us develop a more complete product
+              that truly meets the needs of end users.
+            </p>
+          </div>
+        </div>
+
         {/* Features */}
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-foreground">Features</h2>
@@ -172,15 +195,15 @@ export default async function ProductPage({
                 : "This product is under active development."}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Be among the first to try it. Join our beta program for early access.
+              Help us improve. Your feedback shapes the roadmap.
             </p>
             <div className="mt-4">
               <ButtonLink
                 size="sm"
-                href="/beta"
+                href="/feedback"
                 className="bg-brand-bright text-brand-foreground hover:bg-brand-bright/90"
               >
-                Request Access <ArrowRight className="ml-2 h-4 w-4" />
+                Give Feedback <ArrowRight className="ml-2 h-4 w-4" />
               </ButtonLink>
             </div>
           </div>

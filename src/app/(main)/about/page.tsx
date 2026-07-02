@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { ArrowRight, Blocks, GitPullRequest, Globe, Shield } from "lucide-react";
+import { ArrowRight, Blocks, GitPullRequest, Globe, Shield, ExternalLink } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const TEAM = [
-  { name: "Mike Tropi", role: "Founder & Lead Developer", initials: "MT" },
-  { name: "Duc Dung", role: "WordPress Engineer", initials: "DD" },
+  { name: "Mike Tropi", role: "Founder & Lead Developer", initials: "MT", github: "miketropi" },
+  { name: "Duc Dung", role: "WordPress Engineer", initials: "DD", github: "ducdung196qtr" },
+  { name: "Tom Dev", role: "WordPress Developer", initials: "TD", github: "tomdevvn90" },
 ];
 
 const VALUES = [
@@ -99,6 +100,16 @@ export default function AboutPage() {
                     {member.name}
                   </p>
                   <p className="text-xs text-muted-foreground">{member.role}</p>
+                  {member.github && (
+                    <a
+                      href={`https://github.com/${member.github}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-0.5 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-brand"
+                    >
+                      @{member.github} <ExternalLink className="size-3" />
+                    </a>
+                  )}
                 </div>
               </li>
             ))}
@@ -117,10 +128,10 @@ export default function AboutPage() {
           <div className="mt-6">
             <ButtonLink
               size="lg"
-              href="/beta"
+              href="/feedback"
               className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
             >
-              Get In Touch <ArrowRight className="ml-2 h-4 w-4" />
+              Send Feedback <ArrowRight className="ml-2 h-4 w-4" />
             </ButtonLink>
           </div>
         </div>

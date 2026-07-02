@@ -13,45 +13,44 @@ enum ProductStatus {
   launched
 }
 
-enum ChangelogType {
-  feature
-  fix
-  improvement
-}
-
 model Product {
-  id         Int              @id @default(autoincrement())
-  slug       String           @unique
+  id         Int            @id @default(autoincrement())
+  slug       String         @unique
   name       String
   tagline    String
-  description String @db.Text
+  description String        @db.Text
   features   Json
   status     ProductStatus
   icon       String
-  coverImage String           @default("")
+  coverImage String         @default("")
+  gallery    Json           @default("[]")
   category   String
   github     String?
   liveDemo   String?
 
-  changelogEntries ChangelogEntry[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
+enum FeedbackCategory {
+  bug
+  feature
+  improvement
+  general
+}
+
+model Feedback {
+  id         Int              @id @default(autoincrement())
+  name       String
+  email      String
+  category   FeedbackCategory
+  productSlug String?
+  message    String           @db.Text
+  read       Boolean          @default(false)
 
   createdAt  DateTime         @default(now())
   updatedAt  DateTime         @updatedAt
-}
 
-model ChangelogEntry {
-  id         Int            @id @default(autoincrement())
-  date       DateTime
-  title      String
-  content    String         @default("")
-  version    String
-  type       ChangelogType
-
-  product    Product        @relation(fields: [productSlug], references: [slug])
-  productSlug String
-
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-
-  @@index([productSlug])
+  @@index([category])
+  @@index([read])
 }

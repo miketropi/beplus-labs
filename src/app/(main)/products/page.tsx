@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageSquareText } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Badge } from "@/components/ui/badge";
 import { ProductCoverImage } from "@/components/shared/product-cover-image";
@@ -31,6 +31,17 @@ export default async function ProductsPage() {
           <p className="mt-3 text-muted-foreground">
             WordPress themes, plugins, and tools — open-source, rigorously tested.
           </p>
+        </div>
+
+        <div className="mb-10 rounded-xl border border-brand-bright/30 bg-brand-muted p-5 dark:bg-brand-bright/5">
+          <div className="flex items-start gap-3">
+            <MessageSquareText className="mt-0.5 size-5 shrink-0 text-brand-foreground dark:text-brand-bright" />
+            <p className="text-sm leading-relaxed text-foreground">
+              We encourage users to download and try out the products below and share their
+              feedback during use. This will greatly help us develop a more complete product
+              that truly meets the needs of end users.
+            </p>
+          </div>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -94,10 +105,10 @@ export default async function ProductsPage() {
         <div className="mt-12 text-center">
           <ButtonLink
             size="lg"
-            href="/beta"
+            href="/feedback"
             className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
           >
-            Join Beta Program <ArrowRight className="ml-2 h-4 w-4" />
+            Share Your Feedback <ArrowRight className="ml-2 h-4 w-4" />
           </ButtonLink>
         </div>
       </div>

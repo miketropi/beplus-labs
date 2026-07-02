@@ -27,6 +27,7 @@ type ProductData = {
   tagline: string;
   description: string;
   features: string[];
+  gallery?: string[];
   status: string;
   icon: string;
   coverImage: string;
@@ -148,6 +149,19 @@ export function ProductForm({ product }: { product?: ProductData }) {
         />
       </div>
 
+      <div className="space-y-2">
+        <label className="text-sm font-medium">
+          Gallery Images <span className="text-muted-foreground">(one URL per line)</span>
+        </label>
+        <textarea
+          name="gallery"
+          rows={4}
+          defaultValue={product?.gallery?.join("\n") ?? ""}
+          className="flex w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+        />
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <label className="text-sm font-medium">
@@ -176,7 +190,7 @@ export function ProductForm({ product }: { product?: ProductData }) {
           <button
             type="button"
             onClick={async () => {
-              if (confirm("Delete this product? This will also delete its changelog entries.")) {
+              if (confirm("Delete this product?")) {
                 const { deleteProduct } = await import(
                   "@/lib/admin-actions"
                 );

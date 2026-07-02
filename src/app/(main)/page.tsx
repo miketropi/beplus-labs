@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Zap, GitBranch, Star, Package, Paintbrush, Menu, Sparkles, Search, type LucideIcon } from "lucide-react";
+import { ArrowRight, GitBranch, Star, Package, Zap, Paintbrush, Menu, Sparkles, Search, MessageSquareText, type LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/shared/button-link";
 import { Badge } from "@/components/ui/badge";
+import { HeroSection } from "@/components/shared/hero-section";
+import { FAqSection } from "@/components/shared/faq-section";
 import { getAllProducts, STATUS_LABELS } from "@/lib/data";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -29,44 +31,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pt-28 sm:pb-28">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(207,254,37,0.08),transparent_60%)]" />
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="mx-auto mb-6 inline-flex h-8 items-center gap-2 rounded-full border border-brand-bright/30 bg-brand-muted px-4 text-xs font-medium text-brand-foreground dark:bg-brand-bright/10 dark:text-brand-bright">
-            <Zap className="h-3.5 w-3.5" />
-            Open-source WordPress tools
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Build for{" "}
-            <span className="text-brand">WordPress</span>,
-            <br />
-            ship with confidence
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Blocks, themes, and plugins engineered with modern workflows —
-            TypeScript, Tailwind CSS v4, PHPStan, and comprehensive quality
-            pipelines.
-          </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <ButtonLink
-              size="lg"
-              href="/products"
-              className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
-            >
-              Explore Products <ArrowRight className="ml-2 h-4 w-4" />
-            </ButtonLink>
-            <ButtonLink
-              variant="outline"
-              size="lg"
-              href="/beta"
-              className="h-12 px-8"
-            >
-              Join Beta Program
-            </ButtonLink>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Stats */}
       <section className="border-y bg-muted/20 px-4 py-10 sm:px-6">
@@ -88,6 +53,14 @@ export default async function HomePage() {
       {/* Products */}
       <section className="px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-7xl">
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <p className="text-sm text-muted-foreground">
+              Download and try out the products below — your{" "}
+              <Link href="/feedback" className="text-brand hover:underline">feedback</Link>{" "}
+              helps us build better tools for everyone.
+            </p>
+          </div>
+
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Our Products
@@ -142,6 +115,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <FAqSection />
+
       {/* CTA */}
       <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(207,254,37,0.1),transparent_60%)]" />
@@ -156,10 +131,10 @@ export default async function HomePage() {
           <div className="mt-8">
             <ButtonLink
               size="lg"
-              href="/beta"
+              href="/feedback"
               className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
             >
-              Get Early Access <ArrowRight className="ml-2 h-4 w-4" />
+              Send Feedback <ArrowRight className="ml-2 h-4 w-4" />
             </ButtonLink>
           </div>
         </div>

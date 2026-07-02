@@ -1,9 +1,9 @@
-type BetaRequestData = {
+type FeedbackFormData = {
   name: string;
   email: string;
-  company?: string;
-  products: string[];
-  description?: string;
+  category: string;
+  productSlug?: string;
+  message: string;
 };
 
 type ContactFormData = {
@@ -49,38 +49,26 @@ function wrap(html: string) {
 </html>`;
 }
 
-export function betaRequestNotification(data: BetaRequestData) {
-  const productsHtml = data.products
-    .map((p) => `<li style="padding:2px 0;">${p}</li>`)
-    .join("");
-
+export function feedbackNotification(data: FeedbackFormData) {
   return wrap(`
-    <h2 style="margin:0 0 16px;font-size:18px;color:#111;">New Beta Request</h2>
+    <h2 style="margin:0 0 16px;font-size:18px;color:#111;">New Feedback</h2>
     <table cellpadding="0" cellspacing="0" style="font-size:14px;color:#333;line-height:1.6;">
+      <tr><td style="padding:4px 0;"><strong>Category</strong></td><td style="padding:4px 0;padding-left:12px;">${data.category}</td></tr>
       <tr><td style="padding:4px 0;"><strong>Name</strong></td><td style="padding:4px 0;padding-left:12px;">${data.name}</td></tr>
       <tr><td style="padding:4px 0;"><strong>Email</strong></td><td style="padding:4px 0;padding-left:12px;"><a href="mailto:${data.email}" style="color:#6B8C0D;">${data.email}</a></td></tr>
-      ${data.company ? `<tr><td style="padding:4px 0;"><strong>Company</strong></td><td style="padding:4px 0;padding-left:12px;">${data.company}</td></tr>` : ""}
+      ${data.productSlug ? `<tr><td style="padding:4px 0;"><strong>Product</strong></td><td style="padding:4px 0;padding-left:12px;">${data.productSlug}</td></tr>` : ""}
     </table>
-    <h3 style="margin:20px 0 8px;font-size:14px;color:#111;">Interested Products</h3>
-    <ul style="margin:0;padding-left:20px;font-size:14px;color:#333;">
-      ${productsHtml}
-    </ul>
-    ${data.description ? `
-    <h3 style="margin:20px 0 8px;font-size:14px;color:#111;">Project Description</h3>
-    <div style="margin:0;padding:12px;background:#f9f9f9;border-radius:6px;font-size:14px;color:#333;line-height:1.6;">${data.description}</div>
-    ` : ""}
+    <h3 style="margin:20px 0 8px;font-size:14px;color:#111;">Message</h3>
+    <div style="margin:0;padding:12px;background:#f9f9f9;border-radius:6px;font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;">${data.message}</div>
   `);
 }
 
-export function betaConfirmationEmail(name: string) {
+export function feedbackConfirmationEmail(name: string) {
   return wrap(`
-    <h2 style="margin:0 0 12px;font-size:18px;color:#111;">Thanks for your interest!</h2>
+    <h2 style="margin:0 0 12px;font-size:18px;color:#111;">Thanks for your feedback!</h2>
     <p style="margin:0 0 12px;font-size:14px;color:#333;line-height:1.6;">Hi ${name},</p>
     <p style="margin:0 0 12px;font-size:14px;color:#333;line-height:1.6;">
-      We've received your beta program request and our team will review it shortly. You'll hear back from us within 48 hours.
-    </p>
-    <p style="margin:0 0 16px;font-size:14px;color:#333;line-height:1.6;">
-      In the meantime, feel free to check out our <a href="https://bepluslabs.com/changelog" style="color:#6B8C0D;">changelog</a> to see what we're building.
+      We've received your feedback and our team will review it. Your input helps shape the direction of our products.
     </p>
     <p style="margin:0;font-size:14px;color:#333;">— The BePlus Labs Team</p>
   `);
