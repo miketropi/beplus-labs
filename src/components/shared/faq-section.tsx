@@ -2,29 +2,35 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { HelpCircle, Package, Download, GitFork, MessageSquare, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 const FAQS = [
   {
+    icon: HelpCircle,
     q: "What is BePlus Labs?",
-    a: "We build open-source WordPress themes, plugins, and tools with modern development workflows — TypeScript, Tailwind CSS v4, PHPStan, and automated testing. Every product is MIT-licensed and available on GitHub.",
+    a: "We're a small team of WordPress developers building open-source themes, plugins, and tools that bring modern engineering practices to the WordPress ecosystem. Every product is MIT-licensed, fully documented, and available on GitHub. Think TypeScript instead of vanilla JS, PHPStan instead of guesswork, and proper CI/CD instead of FTP uploads.",
   },
   {
-    q: "Are your products free?",
-    a: "Yes. All our products are open-source and free to use. You can download them from GitHub, self-host them, and modify them to fit your needs. We believe in giving back to the WordPress community.",
+    icon: Package,
+    q: "Are your products really free?",
+    a: "Absolutely. All our products are open-source and free to use — no hidden tiers, no premium upgrades, no license keys. You can download them from GitHub, self-host them, modify them to fit your needs, and even use them in commercial projects. We believe the WordPress community thrives when quality tooling is accessible to everyone.",
   },
   {
-    q: "How do I get started?",
-    a: "Browse our products, pick one that fits your needs, and download the latest release from GitHub. Each product includes a README with setup instructions. If you get stuck, open an issue on GitHub or send us feedback.",
+    icon: Download,
+    q: "How do I get started with a product?",
+    a: "Browse our products, pick one that fits your project, and download the latest release from its GitHub repository. Every product ships with a comprehensive README that walks you through setup, configuration, and common use cases. Running into trouble? Open an issue on GitHub or send us feedback — we typically respond within 24 hours.",
   },
   {
-    q: "Can I contribute?",
-    a: "Absolutely. Star the repos, submit pull requests, report bugs, or suggest features. All our projects are open to community contributions. Check the contributing guide in each repository.",
+    icon: GitFork,
+    q: "Can I contribute to your projects?",
+    a: "Absolutely — we welcome contributions from the community. Star the repos to show your support, submit pull requests with improvements, report bugs you find, or suggest features you'd like to see. Each repository has a contributing guide to help you get started. Whether you're a seasoned WordPress developer or just getting started, there's a place for you here.",
   },
   {
-    q: "Do you offer support?",
-    a: "We provide community support through GitHub issues. For critical bugs, open an issue and we'll respond promptly. We don't offer paid support plans at this time, but your feedback helps us prioritize improvements.",
+    icon: MessageSquare,
+    q: "What kind of support do you offer?",
+    a: "We provide community support through GitHub issues for all our products. Found a bug? Open an issue with steps to reproduce and we'll investigate promptly. Have a question about configuration? The community and maintainers are happy to help. While we don't offer paid support plans at this time, your feedback directly shapes our roadmap and helps us prioritize what matters most.",
   },
 ];
 
@@ -34,36 +40,47 @@ export function FAqSection() {
   return (
     <section className="px-4 py-20 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-12 text-center">
+        <div className="mb-14 text-center">
+          <p className="meta-label mb-2">Support</p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p className="mt-3 text-muted-foreground">
             Everything you need to know about our products and how we work.
+            Can&apos;t find what you&apos;re looking for?{" "}
+            <Link href="/contact" className="text-brand hover:underline">
+              Get in touch
+            </Link>
+            .
           </p>
         </div>
 
         <div className="space-y-3">
           {FAQS.map((faq, i) => {
             const isOpen = open === i;
+            const Icon = faq.icon;
             return (
               <div
                 key={i}
                 className={cn(
-                  "rounded-xl border bg-card transition-shadow",
-                  isOpen && "shadow-sm",
+                  "rounded-xl border bg-card transition-all",
+                  isOpen && "shadow-sm border-brand-bright/30",
                 )}
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:text-brand"
+                  className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:text-brand"
                 >
-                  <span className="text-sm font-medium text-foreground">
+                  <Icon className={cn(
+                    "mt-0.5 h-5 w-5 shrink-0 transition-colors",
+                    isOpen ? "text-brand" : "text-muted-foreground",
+                  )} />
+                  <span className="flex-1 font-medium text-foreground">
                     {faq.q}
                   </span>
                   <ChevronDown
                     className={cn(
-                      "size-4 shrink-0 text-muted-foreground transition-transform duration-300",
+                      "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300",
                       isOpen && "rotate-180",
                     )}
                   />

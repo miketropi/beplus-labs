@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 const TEAM = [
   { name: "Mike Tropi", role: "Founder & Lead Developer", initials: "MT", github: "miketropi" },
   { name: "Duc Dung", role: "WordPress Engineer", initials: "DD", github: "ducdung196qtr" },
-  { name: "Tom Dev", role: "WordPress Developer", initials: "TD", github: "tomdevvn90" },
+  { name: "Tom Dev", role: "Founder & Project Manager", initials: "TD", github: "tomdevvn90" },
 ];
 
 const VALUES = [
@@ -40,20 +40,21 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="px-4 py-16 sm:px-6 sm:py-20">
+    <div className="px-4 py-12 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-4xl">
+        <p className="meta-label mb-2">About</p>
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           About BePlus Labs
         </h1>
 
-        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+        <p className="mt-6 text-base leading-relaxed text-muted-foreground">
           We&apos;re a small team of WordPress developers who believe the ecosystem
           deserves better tooling. Our mission is to build open-source themes,
           plugins, and developer tools that bring modern engineering practices to
           WordPress.
         </p>
 
-        <p className="mt-4 text-muted-foreground">
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
           BePlus Labs started in 2025 with Nextora — a block theme that treats
           development like professional software engineering. TypeScript instead
           of vanilla JS, PHPStan instead of guesswork, proper CI/CD instead of
@@ -63,17 +64,15 @@ export default function AboutPage() {
 
         {/* Values */}
         <div className="mt-16">
-          <h2 className="text-xl font-semibold text-foreground">
-            What We Believe
-          </h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          <h2 className="meta-label">What We Believe</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {VALUES.map((value) => (
-              <div key={value.title} className="rounded-lg border p-5">
-                <value.icon className="h-6 w-6 text-brand" />
-                <h3 className="mt-3 font-semibold text-foreground">
+              <div key={value.title} className="card-dia p-5">
+                <value.icon className="h-5 w-5 text-brand" />
+                <h3 className="mt-3 font-mono text-sm font-semibold text-foreground">
                   {value.title}
                 </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                   {value.desc}
                 </p>
               </div>
@@ -83,31 +82,31 @@ export default function AboutPage() {
 
         {/* Team */}
         <div className="mt-16">
-          <h2 className="text-xl font-semibold text-foreground">The Team</h2>
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+          <h2 className="meta-label">The Team</h2>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {TEAM.map((member) => (
               <li
                 key={member.name}
-                className="flex items-center gap-4 rounded-lg border p-4"
+                className="card-dia flex items-center gap-3 p-4"
               >
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-brand-muted text-brand-foreground dark:bg-brand-bright/10 dark:text-brand-bright text-sm">
+                <Avatar className="size-9">
+                  <AvatarFallback className="bg-brand-muted font-mono text-xs text-brand-foreground dark:bg-brand-bright/10 dark:text-brand-bright">
                     {member.initials}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="text-sm font-medium text-foreground">
+                <div className="min-w-0">
+                  <p className="font-mono text-sm font-semibold text-foreground">
                     {member.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
+                  <p className="text-sm text-muted-foreground">{member.role}</p>
                   {member.github && (
                     <a
                       href={`https://github.com/${member.github}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-0.5 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-brand"
+                      className="mt-0.5 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-brand"
                     >
-                      @{member.github} <ExternalLink className="size-3" />
+                      @{member.github} <ExternalLink className="size-2.5" />
                     </a>
                   )}
                 </div>
@@ -117,8 +116,8 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 rounded-xl border border-brand-bright/30 bg-brand-muted p-8 text-center dark:bg-brand-bright/5">
-          <h2 className="text-xl font-semibold text-brand-foreground dark:text-brand-bright">
+        <div className="mt-16 card-dia border-brand-bright/30 bg-brand-muted p-8 text-center dark:bg-brand-bright/5">
+          <h2 className="font-mono text-base font-semibold text-brand-foreground dark:text-brand-bright">
             Want to contribute?
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -129,9 +128,9 @@ export default function AboutPage() {
             <ButtonLink
               size="lg"
               href="/feedback"
-              className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
+              className="h-11 bg-brand-bright px-7 font-mono text-sm font-semibold text-brand-foreground hover:bg-brand-bright/85"
             >
-              Send Feedback <ArrowRight className="ml-2 h-4 w-4" />
+              Send Feedback <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
             </ButtonLink>
           </div>
         </div>

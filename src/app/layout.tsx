@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Inconsolata } from "next/font/google";
+import { Special_Elite, IBM_Plex_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const inconsolata = Inconsolata({
-  variable: "--font-inconsolata",
+const specialElite = Special_Elite({
+  variable: "--font-heading",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const ibmPlexSerif = IBM_Plex_Serif({
+  variable: "--font-serif",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -25,15 +32,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inconsolata.variable} antialiased`}
+      className={`${specialElite.variable} ${ibmPlexSerif.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
         <Script id="theme" strategy="beforeInteractive">
           {`
 (function() {
-  var theme = localStorage.getItem('theme');
-  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  if (localStorage.getItem('theme') === 'dark') {
     document.documentElement.classList.add('dark');
   }
 })();
