@@ -24,21 +24,22 @@ export default async function ProductsPage() {
   const products = await getAllProducts({ publishedOnly: true });
 
   return (
-    <div className="px-4 py-16 sm:px-6 sm:py-20">
+    <div className="px-4 py-12 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10">
+          <p className="meta-label mb-2">Products</p>
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Our Products
           </h1>
-          <p className="mt-3 text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             WordPress themes, plugins, and tools — open-source, rigorously tested.
           </p>
         </div>
 
-        <div className="mb-10 rounded-xl border border-brand-bright/30 bg-brand-muted p-5 dark:bg-brand-bright/5">
+        <div className="mb-10 card-dia p-5">
           <div className="flex items-start gap-3">
-            <MessageSquareText className="mt-0.5 size-5 shrink-0 text-brand-foreground dark:text-brand-bright" />
-            <p className="text-sm leading-relaxed text-foreground">
+            <MessageSquareText className="mt-0.5 size-4 shrink-0 text-brand" />
+            <p className="text-sm leading-relaxed text-muted-foreground">
               We encourage users to download and try out the products below and share their
               feedback during use. This will greatly help us develop a more complete product
               that truly meets the needs of end users.
@@ -51,9 +52,8 @@ export default async function ProductsPage() {
             <Link
               key={product.slug}
               href={`/products/${product.slug}`}
-              className="group flex flex-col overflow-hidden rounded-xl border bg-card transition-all hover:border-brand-bright/30 hover:shadow-md"
+              className="card-dia group flex flex-col overflow-hidden"
             >
-              {/* Cover image */}
               <div className="p-4">
                 <ProductCoverImage
                   src={product.coverImage}
@@ -62,21 +62,20 @@ export default async function ProductsPage() {
                 />
               </div>
 
-              {/* Card body */}
-              <div className="flex flex-1 flex-col gap-2.5 p-4">
+              <div className="flex flex-1 flex-col gap-2.5 p-4 pt-0">
                 <div className="flex items-start justify-between gap-2">
-                  <h2 className="text-sm font-semibold text-foreground group-hover:text-brand transition-colors">
+                  <h2 className="font-mono text-sm font-semibold text-foreground transition-colors group-hover:text-brand">
                     {product.name}
                   </h2>
                   <Badge
                     variant={STATUS_VARIANT[product.status]}
-                    className="shrink-0 text-[10px]"
+                    className="shrink-0 text-xs"
                   >
                     {STATUS_LABELS[product.status]}
                   </Badge>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                   {product.tagline}
                 </p>
 
@@ -84,20 +83,20 @@ export default async function ProductsPage() {
                   {product.features.slice(0, 2).map((f) => (
                     <span
                       key={f}
-                      className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                      className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
                     >
                       {f}
                     </span>
                   ))}
                   {product.features.length > 2 && (
-                    <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                    <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
                       +{product.features.length - 2}
                     </span>
                   )}
                 </div>
 
-                <div className="mt-auto flex items-center gap-1 pt-1 text-sm font-medium text-brand transition-all group-hover:gap-2">
-                  Details <ArrowRight className="h-3.5 w-3.5" />
+                <div className="mt-auto flex items-center gap-1 pt-1 font-mono text-sm font-medium text-brand transition-all group-hover:gap-2">
+                  Details <ArrowRight className="h-3 w-3" />
                 </div>
               </div>
             </Link>
@@ -108,9 +107,9 @@ export default async function ProductsPage() {
           <ButtonLink
             size="lg"
             href="/feedback"
-            className="h-12 bg-brand-bright px-8 text-sm font-semibold text-brand-foreground hover:bg-brand-bright/90"
+            className="h-11 bg-brand-bright px-7 font-mono text-sm font-semibold text-brand-foreground hover:bg-brand-bright/85"
           >
-            Share Your Feedback <ArrowRight className="ml-2 h-4 w-4" />
+            Share Your Feedback <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
           </ButtonLink>
         </div>
       </div>

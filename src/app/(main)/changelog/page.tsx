@@ -24,17 +24,26 @@ export default async function ChangelogPage() {
     // DB not connected
   }
 
-  return (
-    <div className="px-4 py-16 sm:px-6 sm:py-20">
-      <div className="mx-auto max-w-4xl">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Changelog
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          Live updates from GitHub — the latest releases across all BePlus Labs products.
-        </p>
+  const sorted = [...entries].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
 
-        <ChangelogContent entries={entries} products={products} />
+  const latest = sorted[0];
+
+  return (
+    <div className="px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-10">
+          <p className="meta-label mb-2">Release Notes</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Changelog
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Live updates from GitHub — the latest releases across all BePlus Labs products.
+          </p>
+        </div>
+
+        <ChangelogContent entries={entries} products={products} latest={latest} />
       </div>
     </div>
   );

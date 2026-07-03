@@ -194,7 +194,7 @@ export function FeedbackForm({ products }: { products: Product[] }) {
               "Your input directly shapes our products",
             ].map((step) => (
               <li key={step} className="flex items-start gap-2 text-sm">
-                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-muted text-[11px] font-semibold text-brand-foreground dark:bg-brand-bright/20 dark:text-brand-bright">
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-muted text-sm font-semibold text-brand-foreground dark:bg-brand-bright/20 dark:text-brand-bright">
                   {step.charAt(0)}
                 </span>
                 <span className="text-muted-foreground">{step}</span>
