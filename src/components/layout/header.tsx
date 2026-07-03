@@ -178,7 +178,7 @@ export function Header({ products }: { products: Product[] }) {
             nativeButton={false}
             render={
               <a
-                href="https://discord.gg/D66sUp42g"
+                href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
               />
@@ -238,7 +238,7 @@ export function Header({ products }: { products: Product[] }) {
                 ))}
                 <div className="my-2 border-t" />
                 <a
-                  href="https://discord.gg/D66sUp42g"
+                  href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-brand"
