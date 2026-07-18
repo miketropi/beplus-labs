@@ -41,9 +41,8 @@ export function FAqSection() {
     <section className="px-4 py-20 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="mb-14 text-center">
-          <p className="meta-label mb-2">Support</p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Frequently Asked Questions
+            Questions, answered
           </h2>
           <p className="mt-3 text-muted-foreground">
             Everything you need to know about our products and how we work.
