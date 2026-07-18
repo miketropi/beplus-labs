@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, GitBranch } from "lucide-react";
 import Link from "next/link";
@@ -8,14 +8,14 @@ import { ButtonLink } from "@/components/shared/button-link";
 import { RevealItem } from "@/components/shared/reveal";
 
 type Token =
-  | { t: "kw"; v: string }
-  | { t: "var"; v: string }
-  | { t: "str"; v: string }
-  | { t: "num"; v: string }
-  | { t: "comment"; v: string }
-  | { t: "fn"; v: string }
-  | { t: "punct"; v: string }
-  | { t: "plain"; v: string };
+  | { t: "kw"; v: string; slot?: string }
+  | { t: "var"; v: string; slot?: string }
+  | { t: "str"; v: string; slot?: string }
+  | { t: "num"; v: string; slot?: string }
+  | { t: "comment"; v: string; slot?: string }
+  | { t: "fn"; v: string; slot?: string }
+  | { t: "punct"; v: string; slot?: string }
+  | { t: "plain"; v: string; slot?: string };
 
 const TOKEN_CLASS: Record<Token["t"], string> = {
   kw: "text-lime-700 dark:text-brand-bright",
@@ -29,78 +29,85 @@ const TOKEN_CLASS: Record<Token["t"], string> = {
 };
 
 const CODE: Token[][] = [
-  [
-    { t: "kw", v: "import" },
-    { t: "plain", v: " { " },
-    { t: "var", v: "registerBlockType" },
-    { t: "plain", v: " } " },
-    { t: "kw", v: "from" },
-    { t: "plain", v: " " },
-    { t: "str", v: '"@wordpress/blocks"' },
-    { t: "punct", v: ";" },
-  ],
-  [],
-  [
-    { t: "fn", v: "registerBlockType" },
-    { t: "punct", v: "(" },
-    { t: "str", v: '"beplus/cover"' },
-    { t: "punct", v: ", {" },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "apiVersion" },
-    { t: "punct", v: ": " },
-    { t: "num", v: "3" },
-    { t: "punct", v: "," },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "title" },
-    { t: "punct", v: ": " },
-    { t: "str", v: '"Cover"' },
-    { t: "punct", v: "," },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "category" },
-    { t: "punct", v: ": " },
-    { t: "str", v: '"media"' },
-    { t: "punct", v: "," },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "attributes" },
-    { t: "punct", v: ": {" },
-  ],
-  [
-    { t: "plain", v: "    " },
-    { t: "var", v: "accent" },
-    { t: "punct", v: ": { " },
-    { t: "var", v: "type" },
-    { t: "punct", v: ": " },
-    { t: "str", v: '"string"' },
-    { t: "punct", v: ", " },
-    { t: "var", v: "default" },
-    { t: "punct", v: ": " },
-    { t: "str", v: '"#CFFE25"' },
-    { t: "plain", v: " " },
-    { t: "punct", v: "} }," },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "edit" },
-    { t: "punct", v: ": " },
-    { t: "var", v: "CoverEdit" },
-    { t: "punct", v: "," },
-  ],
-  [
-    { t: "plain", v: "  " },
-    { t: "var", v: "save" },
-    { t: "punct", v: ": " },
-    { t: "var", v: "CoverSave" },
-    { t: "punct", v: "," },
-  ],
-  [{ t: "punct", v: "});" }],
+      [
+        { t: "kw", v: "import" },
+        { t: "plain", v: " { " },
+        { t: "var", v: "registerBlockType" },
+        { t: "plain", v: " } " },
+        { t: "kw", v: "from" },
+        { t: "plain", v: " " },
+        { t: "str", v: '"@wordpress/blocks"' },
+        { t: "punct", v: ";" },
+      ],
+      [],
+      [
+        { t: "fn", v: "registerBlockType" },
+        { t: "punct", v: "(" },
+        { t: "str", v: '"beplus/cover"', slot: "blockName" },
+        { t: "punct", v: ", {" },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "apiVersion" },
+        { t: "punct", v: ": " },
+        { t: "num", v: "3" },
+        { t: "punct", v: "," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "title" },
+        { t: "punct", v: ": " },
+        { t: "str", v: '"Cover"', slot: "title" },
+        { t: "punct", v: "," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "description" },
+        { t: "punct", v: ": " },
+        { t: "str", v: '"A vibrant full-width cover block"', slot: "description" },
+        { t: "punct", v: "," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "category" },
+        { t: "punct", v: ": " },
+        { t: "str", v: '"media"', slot: "category" },
+        { t: "punct", v: "," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "attributes" },
+        { t: "punct", v: ": {" },
+      ],
+      [
+        { t: "plain", v: "    " },
+        { t: "var", v: "accent" },
+        { t: "punct", v: ": { " },
+        { t: "var", v: "type" },
+        { t: "punct", v: ": " },
+        { t: "str", v: '"string"' },
+        { t: "punct", v: ", " },
+        { t: "var", v: "default" },
+        { t: "punct", v: ": " },
+        { t: "str", v: '"#CFFE25"', slot: "accentColor" },
+        { t: "plain", v: " " },
+        { t: "punct", v: "} }," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "edit" },
+        { t: "punct", v: ": " },
+        { t: "var", v: "CoverEdit" },
+        { t: "punct", v: "," },
+      ],
+      [
+        { t: "plain", v: "  " },
+        { t: "var", v: "save" },
+        { t: "punct", v: ": " },
+        { t: "var", v: "CoverSave" },
+        { t: "punct", v: "," },
+      ],
+      [{ t: "punct", v: "});" }],
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -291,7 +298,130 @@ export function HeroSection() {
   );
 }
 
+const SLOT_VALUES: Record<string, Token[]> = {
+  blockName: [
+    { t: "str", v: '"beplus/cover"' },
+    { t: "str", v: '"beplus/hero"' },
+    { t: "str", v: '"beplus/navbar"' },
+    { t: "str", v: '"beplus/footer"' },
+  ],
+  title: [
+    { t: "str", v: '"Cover"' },
+    { t: "str", v: '"Hero"' },
+    { t: "str", v: '"Navbar"' },
+    { t: "str", v: '"Footer"' },
+  ],
+  description: [
+    { t: "str", v: '"A vibrant full-width cover block"' },
+    { t: "str", v: '"A bold hero section with CTA"' },
+    { t: "str", v: '"A responsive navigation block"' },
+    { t: "str", v: '"A flexible site footer block"' },
+  ],
+  category: [
+    { t: "str", v: '"media"' },
+    { t: "str", v: '"layout"' },
+    { t: "str", v: '"design"' },
+    { t: "str", v: '"text"' },
+  ],
+  accentColor: [
+    { t: "str", v: '"#CFFE25"' },
+    { t: "str", v: '"#FF6B6B"' },
+    { t: "str", v: '"#4ECDC4"' },
+    { t: "str", v: '"#45B7D1"' },
+  ],
+};
+
+const SLOT_NAMES = Object.keys(SLOT_VALUES);
+const VALUE_COUNT = SLOT_VALUES[SLOT_NAMES[0]].length;
+
+function maxSlotLen(valueSet: number) {
+  return Math.max(
+    ...SLOT_NAMES.map((name) => SLOT_VALUES[name][valueSet].v.length),
+  );
+}
+
+function useCodeTyping(reduce: boolean | null) {
+  const [visibleChars, setVisibleChars] = useState(0);
+  const [valueSet, setValueSet] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (reduce) {
+      setVisibleChars(maxSlotLen(0));
+      return;
+    }
+
+    if (started.current) return;
+    started.current = true;
+
+    const initialLen = maxSlotLen(0);
+    let current = initialLen;
+    setVisibleChars(initialLen);
+
+    let phase: "hold" | "delete" | "pause" | "type" = "hold";
+    let timer: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
+      const len = maxSlotLen(valueSet);
+      if (phase === "hold") {
+        phase = "delete";
+        timer = setTimeout(tick, 2800);
+      } else if (phase === "delete") {
+        current -= 1;
+        setVisibleChars(current);
+        if (current <= 0) {
+          phase = "pause";
+          timer = setTimeout(tick, 500);
+          return;
+        }
+        timer = setTimeout(tick, 20 + Math.random() * 14);
+      } else if (phase === "pause") {
+        setValueSet((prev) => (prev + 1) % VALUE_COUNT);
+        current = 0;
+        phase = "type";
+        timer = setTimeout(tick, 400);
+      } else {
+        current += 1;
+        setVisibleChars(current);
+        if (current >= len) {
+          phase = "hold";
+          timer = setTimeout(tick, 2800);
+          return;
+        }
+        timer = setTimeout(tick, 35 + Math.random() * 22);
+      }
+    };
+
+    timer = setTimeout(tick, 2500);
+
+    return () => clearTimeout(timer);
+  }, [reduce]);
+
+  return { visibleChars: reduce ? maxSlotLen(valueSet) : visibleChars, valueSet };
+}
+
+function BlinkingCursor() {
+  return (
+    <motion.span
+      aria-hidden
+      animate={{ opacity: [1, 0.2, 1] }}
+      transition={{
+        duration: 1,
+        repeat: Infinity,
+        ease: "linear",
+        times: [0, 0.5, 1],
+      }}
+      className="inline-block h-[1.15em] w-[1.5px] translate-y-[0.15em] bg-brand-bright align-baseline"
+    />
+  );
+}
+
 function CodePanel({ reduce }: { reduce: boolean | null }) {
+  const { visibleChars, valueSet } = useCodeTyping(reduce);
+  const maxLen = maxSlotLen(valueSet);
+
+  let cursorLine = -1;
+
   return (
     <motion.div
       initial={reduce ? false : { opacity: 0, y: 24, scale: 0.985 }}
@@ -319,20 +449,62 @@ function CodePanel({ reduce }: { reduce: boolean | null }) {
         <div className="font-mono text-[12.5px] leading-[1.65] px-4 py-4 sm:px-5 sm:py-5">
           {CODE.map((tokens, i) => (
             <div key={i} className="flex gap-4">
-              <span className="select-none text-right text-zinc-400 tabular-nums w-5 shrink-0 sm:w-6 dark:text-muted-foreground/30">
-                {i + 1}
-              </span>
-              <span className="whitespace-pre">
-                {tokens.length === 0
-                  ? "\u00A0"
-                  : tokens.map((t, j) => (
-                      <span key={j} className={TOKEN_CLASS[t.t]}>
-                        {t.v}
-                      </span>
-                    ))}
-              </span>
-            </div>
-          ))}
+                <span className="select-none text-right text-zinc-400 tabular-nums w-5 shrink-0 sm:w-6 dark:text-muted-foreground/30">
+                  {i + 1}
+                </span>
+                <span className="whitespace-pre">
+                  {tokens.length === 0
+                    ? "\u00A0"
+                    : tokens.map((original, j) => {
+                        if (original.slot) {
+                          const tok =
+                            SLOT_VALUES[original.slot][valueSet];
+                          const slotLen = tok.v.length;
+                          const shown = reduce
+                            ? slotLen
+                            : Math.min(
+                                slotLen,
+                                Math.ceil(
+                                  (slotLen * visibleChars) / maxLen,
+                                ),
+            )
+                          const partial =
+                            shown < slotLen ? tok.v.slice(0, shown) : null;
+
+                          if (cursorLine === -1 && shown < slotLen) {
+                            cursorLine = i;
+                          }
+
+                          if (shown === 0) return null;
+
+                          if (shown >= slotLen) {
+                            return (
+                              <span key={j} className={TOKEN_CLASS[tok.t]}>
+                                {tok.v}
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span key={j} className={TOKEN_CLASS[tok.t]}>
+                              {partial}
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <span key={j} className={TOKEN_CLASS[original.t]}>
+                            {original.v}
+                          </span>
+                        );
+                      })}
+                  {cursorLine === i &&
+                    visibleChars < maxLen &&
+                    !reduce && <BlinkingCursor />}
+                </span>
+              </div>
+            )
+          )}
         </div>
 
         <div className="flex items-center justify-between border-t border-zinc-200 bg-zinc-100/70 px-4 py-2 font-mono text-[11px] text-zinc-500 dark:border-white/10 dark:bg-white/[0.04] dark:text-muted-foreground/75">

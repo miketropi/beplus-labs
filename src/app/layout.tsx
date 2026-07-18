@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, IBM_Plex_Serif } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Serif, Google_Sans_Code } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const bricolageGrotesque = Bricolage_Grotesque({
 
 const ibmPlexSerif = IBM_Plex_Serif({
   variable: "--font-serif",
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+
+const googleSansCode = Google_Sans_Code({
+  variable: "--font-mono-code",
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
@@ -32,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bricolageGrotesque.variable} ${ibmPlexSerif.variable} antialiased`}
+      className={`${bricolageGrotesque.variable} ${ibmPlexSerif.variable} ${googleSansCode.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
