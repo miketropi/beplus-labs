@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Special_Elite, IBM_Plex_Serif } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const specialElite = Special_Elite({
+const bricolageGrotesque = Bricolage_Grotesque({
   variable: "--font-heading",
-  weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${specialElite.variable} ${ibmPlexSerif.variable} antialiased`}
+      className={`${bricolageGrotesque.variable} ${ibmPlexSerif.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
