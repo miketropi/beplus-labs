@@ -84,13 +84,13 @@ export function HomeValues() {
   return (
     <section className="border-y bg-muted/20 px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto max-w-5xl">
-        <RevealItem className="mb-20 sm:mb-24">
+        <RevealItem className="mb-20 text-center sm:mb-24">
           <p className="meta-label mb-4">What we believe</p>
-          <h2 className="max-w-3xl text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mx-auto max-w-3xl text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Built different,{" "}
             <span className="text-brand">on purpose</span>.
           </h2>
-          <p className="mt-3 max-w-2xl text-muted-foreground">
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
             Modern engineering practices for the WordPress ecosystem —
             because the platform deserves better tooling.
           </p>
@@ -107,10 +107,10 @@ export function HomeValues() {
             <motion.li
               key={item.title}
               variants={reduce ? undefined : itemVariants}
-              className="border-b border-border/50 last:border-b-0"
+              className="border-b border-border/50 text-center last:border-b-0"
             >
               <div className="py-12 sm:py-16">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3">
                   <span className="font-mono text-xs font-medium tracking-[0.12em] text-brand-bright">
                     /{item.num}
                   </span>
@@ -123,7 +123,7 @@ export function HomeValues() {
                     highlight={item.highlight}
                   />
                 </h3>
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
                   {item.desc}
                 </p>
                 <p className="meta-label mt-7 sm:mt-8">{item.meta}</p>

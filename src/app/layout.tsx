@@ -51,6 +51,13 @@ export default function RootLayout({
 })();
           `}
         </Script>
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          />
+        )}
       </head>
       <body className="flex min-h-screen flex-col bg-background text-foreground">
         {children}
