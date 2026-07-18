@@ -41,7 +41,7 @@ function StatCard({
   accent,
   sub,
 }: {
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   value: number;
   label: string;
   accent: string;
